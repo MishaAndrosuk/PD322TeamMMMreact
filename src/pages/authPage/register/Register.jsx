@@ -93,7 +93,7 @@ const Register = () => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-                    {t("signup")}
+                    Register
                 </Typography>
                 <Box
                     component="form"

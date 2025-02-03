@@ -98,7 +98,7 @@ const Login = () => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-                    Вхід
+                    Login
                 </Typography>
                 <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ width: "100%" }}>
                     <TextField
