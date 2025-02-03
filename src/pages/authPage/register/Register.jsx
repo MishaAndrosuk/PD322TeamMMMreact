@@ -15,15 +15,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAction } from "../../../hooks/useAction";
-import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
 
 
 const Register = () => {
     const { signUp } = useAction();
     const navigate = useNavigate();
-
-    const { t, i18n } = useTranslation();
 
     const googleErrorHandler = () => {
         console.log("Google auth error");
@@ -228,7 +225,7 @@ const Register = () => {
                             },
                         }}
                     >
-                        {t("signup")}
+                        Register
                     </Button>
                     <Box sx={{ mb: 2 }}>
                         <GoogleLogin
@@ -241,7 +238,7 @@ const Register = () => {
                     <Grid container justifyContent="center" alignItems="center">
                         <Grid item>
                             <Link to="/login" style={{ textDecoration: "none" }}>
-                            Уже є акаунт? Увійти
+                                Already have an account? Login
                             </Link>
                         </Grid>
                     </Grid>

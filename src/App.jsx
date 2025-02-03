@@ -10,8 +10,8 @@ function App() {
   return (
     <GoogleOAuthProvider clientId="47235399203-5dbvs4krmn7oao0p2fk1102dpam9vgsb.apps.googleusercontent.com">
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/log" element={<Login />} />
+        <Route path="/reg" element={<Register />} />
         <Route path="/" element={<MainPage />} />
       </Routes>
     </GoogleOAuthProvider>

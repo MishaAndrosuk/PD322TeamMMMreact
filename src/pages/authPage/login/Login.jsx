@@ -25,13 +25,13 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
-    
+
     const [error, setError] = React.useState("");
 
     const handleSubmit = (values) => {
         const storedEmail = localStorage.getItem("email");
         const storedPassword = localStorage.getItem("password");
-        
+
         if (values.email === storedEmail) {
             if (values.password === storedPassword) {
                 localStorage.setItem("isAuthSuccess", "true");
@@ -156,7 +156,7 @@ const Login = () => {
                     )}
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
-                        label="Запам'ятати мене"
+                        label="Remember me"
                         sx={{ mb: 1 }}
                     />
                     <Button
@@ -166,7 +166,7 @@ const Login = () => {
                         color="primary"
                         sx={{ mt: 2, mb: 1, borderRadius: "10px" }}
                     >
-                        Увійти
+                        Login
                     </Button>
                     <Box sx={{ mb: 1 }}>
                         <GoogleLogin onSuccess={googleSuccessHandler} onError={googleErrorHandler} />
@@ -174,7 +174,7 @@ const Login = () => {
                     <Grid container justifyContent="center">
                         <Grid item>
                             <Link to="/register" style={{ textDecoration: 'none' }}>
-                                Ще не створили акаунт? Зареєструватися
+                                Don`t have an account? Register now
                             </Link>
                         </Grid>
                     </Grid>
