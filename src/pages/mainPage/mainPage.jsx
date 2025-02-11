@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const MainPage = () => {
+function MainPage() {
+
+
     return (
         <div>
-            <h1>Main Page</h1>
+            <h1 style={{height:"1000px"}}>Main page</h1>
         </div>
     );
 }
