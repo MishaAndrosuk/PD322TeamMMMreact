@@ -1,20 +1,20 @@
 import { jwtDecode } from "jwt-decode";
 
-export const login = (token) => (dispatch) => {
+export const signIn = (token) => (dispatch) => {
     try {
         const user = jwtDecode(token);
-        dispatch({ type: "LOGIN", payload: user });
+        dispatch({ type: "SIGN_IN", payload: user });
     } catch (error) {
-        console.error("login error: ", error);
+        console.error("sign in error: ", error);
     }
 };
 
-export const register = (token) => (dispatch) => {
+export const signUp = (token) => (dispatch) => {
     try {
         const user = jwtDecode(token);
-        dispatch({ type: "REGISTER", payload: user });
+        dispatch({ type: "SIGN_UP", payload: user });
     } catch (error) {
-        console.error("register error: ", error);
+        console.error("sign up error: ", error);
     }
 };
 

@@ -4,6 +4,7 @@ export const fetchTestsByTopic = (topicId) => async (dispatch) => {
     try {
         const response = await axios.get(`/api/topic/${topicId}/tests/`);
         dispatch({ type: "FETCH_TESTS_BY_TOPIC", payload: response.data.tests });
+        return response.data.tests;
     } catch (error) {
         console.error("fetchTestsByTopic error:", error);
     }

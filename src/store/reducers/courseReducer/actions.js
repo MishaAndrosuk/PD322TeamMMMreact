@@ -3,7 +3,8 @@ import axios from "axios";
 export const fetchCourses = () => async (dispatch) => {
     try {
         const response = await axios.get("/api/courses/");
-        dispatch({ type: "FETCH_COURSES", payload: response.data });
+        dispatch({ type: "FETCH_COURSES", payload: response.data.courses });
+        return response.data.courses;
     } catch (error) {
         console.error("fetchCourses error:", error);
     }

@@ -21,7 +21,7 @@ import { useAction } from "../../../hooks/useAction";
 import { useTranslation } from "react-i18next";
 
 const Login = () => {
-    const { login } = useAction();
+    const { signIn } = useAction();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
