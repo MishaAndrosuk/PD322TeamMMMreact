@@ -3,9 +3,11 @@ import { useAction } from "../../hooks/useAction";
 import { TextField, Button, Container, Typography, Paper, Box } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const CreateCoursePage = () => {
     const { createCourse } = useAction();
+    const navigate = useNavigate(); 
 
     const validationSchema = Yup.object({
         title: Yup.string()
@@ -35,13 +37,54 @@ const CreateCoursePage = () => {
         },
         validationSchema,
         onSubmit: (values) => {
-            createCourse({ ...values, created_at: new Date().toISOString() });
+            createCourse({ ...values, created_at: new Date().toISOString() })
+                .then((course) => {
+                    navigate(`/topic/create/${course.id}`);
+                })
+                .catch((error) => {
+                    console.error("Error creating course:", error);
+                });
         },
     });
 
+    const handleAddTopic = (event) => {
+        event.preventDefault();
+
+        if (!formik.isValid) {
+            formik.setTouched({
+                title: true,
+                description: true,
+                teacher_name: true,
+                price: true,
+                subject: true,
+            });
+            return;
+        }
+
+        formik.submitForm(); 
+    };
+
+    const handleCreateCourse = (event) => {
+        event.preventDefault();
+
+        if (!formik.isValid) {
+            formik.setTouched({
+                title: true,
+                description: true,
+                teacher_name: true,
+                price: true,
+                subject: true,
+            });
+            return;
+        }
+
+        formik.submitForm();
+        navigate('/');
+    };
+
     return (
         <Container maxWidth="sm">
-            <Paper elevation={3} sx={{ padding: 4, marginTop: 5 }}>
+            <Paper elevation={3} sx={{ padding: 4, marginTop: 5, marginBottom: 5 }}>
                 <Typography variant="h5" gutterBottom>
                     Create Course
                 </Typography>
@@ -110,14 +153,22 @@ const CreateCoursePage = () => {
                         />
                     </Box>
                     <Button
-                        variant="outlined"
+                        type="button"
+                        variant="contained"
                         color="secondary"
                         fullWidth
-                        onClick={() => window.location.href = "/topic/create"}
+                        onClick={handleAddTopic}
                     >
                         Add Topic
                     </Button>
-                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                    <Button
+                        type="button"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        sx={{ mt: 2 }}
+                        onClick={handleCreateCourse}
+                    >
                         Create Course
                     </Button>
                 </form>

@@ -23,11 +23,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/course/create" element={<CreateCoursePage />} />
-          <Route path="/course/update" element={<UpdateCoursePage />} />
+          <Route path="/course/update/:id" element={<UpdateCoursePage />} />
+          <Route path="/topic/create/:id" element={<CreateTopicPage />} />
           <Route path="/topic/create" element={<CreateTopicPage />} />
-          <Route path="/topic/update" element={<UpdateTopicPage />} />
-          <Route path="/test/create" element={<CreateTestPage />} />
-          <Route path="/test/update" element={<UpdateTestPage />} />
+          <Route path="/topic/update/:id" element={<UpdateTopicPage />} />
+          <Route path="/test/create/:id" element={<CreateTestPage />} />
+          <Route path="/test/update/:id" element={<UpdateTestPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
