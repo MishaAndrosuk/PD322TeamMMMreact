@@ -1,17 +1,38 @@
-import React from "react";
-import { useAction } from "../../hooks/useAction";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Container, Typography, Paper, Box } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAction } from "../../hooks/useAction";
 
-const CreateCoursePage = () => {
-    const { createCourse } = useAction();
-    const navigate = useNavigate(); 
+const EditCoursePage = ({ courseId }) => {
+    const { editCourse, fetchTopics } = useAction();
+    const dispatch = useDispatch();
+    const [initialValues, setInitialValues] = useState(null);
+
+    // const course = fetchTopics(courseId);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await dispatch(fetchTopics(courseId));
+                if (response) {
+                    setInitialValues ({
+                        title: response.course_name,
+                        description: response.description,
+                        teacher_name: response.teacher_name,
+                        price: response.price,
+                        subject: response.subject,
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching course data:", error);
+            }
+        };
+        fetchData();
+    }, [courseId, dispatch]);
 
     const validationSchema = Yup.object({
-        title: Yup.string()
-            .required("Course title is required"),
+        title: Yup.string().required("Course title is required"),
         description: Yup.string()
             .required("Description is required")
             .test("min-words", "Description must contain at least 20 words", value =>
@@ -28,65 +49,19 @@ const CreateCoursePage = () => {
     });
 
     const formik = useFormik({
-        initialValues: {
-            title: "",
-            description: "",
-            teacher_name: "",
-            price: "",
-            subject: "",
-        },
+        initialValues: initialValues,
+        enableReinitialize: true,
         validationSchema,
         onSubmit: (values) => {
-            createCourse({ ...values, created_at: new Date().toISOString() })
-                .then((course) => {
-                    navigate(`/topic/create/${course.id}`);
-                })
-                .catch((error) => {
-                    console.error("Error creating course:", error);
-                });
+            editCourse(courseId, values);
         },
     });
 
-    const handleAddTopic = (event) => {
-        event.preventDefault();
-
-        if (!formik.isValid) {
-            formik.setTouched({
-                title: true,
-                description: true,
-                teacher_name: true,
-                price: true,
-                subject: true,
-            });
-            return;
-        }
-
-        formik.submitForm(); 
-    };
-
-    const handleCreateCourse = (event) => {
-        event.preventDefault();
-
-        if (!formik.isValid) {
-            formik.setTouched({
-                title: true,
-                description: true,
-                teacher_name: true,
-                price: true,
-                subject: true,
-            });
-            return;
-        }
-
-        formik.submitForm();
-        navigate('/');
-    };
-
     return (
         <Container maxWidth="sm">
-            <Paper elevation={3} sx={{ padding: 4, marginTop: 5, marginBottom: 5 }}>
+            <Paper elevation={3} sx={{ padding: 4, marginTop: 5 }}>
                 <Typography variant="h5" gutterBottom>
-                    Create Course
+                    Edit Course
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
                     <Box mb={2}>
@@ -152,24 +127,8 @@ const CreateCoursePage = () => {
                             helperText={formik.touched.subject && formik.errors.subject}
                         />
                     </Box>
-                    <Button
-                        type="button"
-                        variant="contained"
-                        color="secondary"
-                        fullWidth
-                        onClick={handleAddTopic}
-                    >
-                        Add Topic
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        sx={{ mt: 2 }}
-                        onClick={handleCreateCourse}
-                    >
-                        Create Course
+                    <Button type="submit" variant="contained" color="primary" fullWidth>
+                        Update Course
                     </Button>
                 </form>
             </Paper>
@@ -177,4 +136,4 @@ const CreateCoursePage = () => {
     );
 };
 
-export default CreateCoursePage;
+export default EditCoursePage;
