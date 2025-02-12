@@ -24,7 +24,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/course/create" element={<CreateCoursePage />} />
           <Route path="/course/update/:id" element={<UpdateCoursePage />} />
-          <Route path="/topic/create/:id" element={<CreateTopicPage />} />
+          <Route path="/topic/create/:courseId" element={<CreateTopicPage />} />
           <Route path="/topic/create" element={<CreateTopicPage />} />
           <Route path="/topic/update/:id" element={<UpdateTopicPage />} />
           <Route path="/test/create/:id" element={<CreateTestPage />} />

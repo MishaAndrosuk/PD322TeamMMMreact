@@ -1,16 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAction } from "../../hooks/useAction";
 import { useSelector } from "react-redux";
-import { TextField, Button, Container, Typography, Paper, Box, MenuItem } from "@mui/material";
+import { TextField, Button, Container, Typography, Paper, Box, MenuItem, CircularProgress } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useParams, useNavigate } from "react-router-dom";
 
 const CreateTopicPage = () => {
-  const { createTopic } = useAction();
+  const { createTopic, fetchCourses } = useAction();
   const courses = useSelector((state) => state.courseReducer.courses || []);
-  const { courseId } = useParams(); 
-  const navigate = useNavigate(); 
+  const { courseId } = useParams();
+  const navigate = useNavigate();
+  
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (courses.length === 0) {
+      fetchCourses().then(() => {
+        setLoading(false);
+      }).catch((error) => {
+        console.error("Error fetching courses:", error);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, [courses, fetchCourses]);
 
   const validationSchema = Yup.object({
     courseId: Yup.string().required("Course is required"),
@@ -24,7 +39,7 @@ const CreateTopicPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      courseId: courseId || "", 
+      courseId: courseId || "", // якщо courseId передається через URL, воно буде автоматично встановлено
       title: "",
       description: "",
     },
@@ -46,31 +61,33 @@ const CreateTopicPage = () => {
         <Typography variant="h5" gutterBottom>
           Create Topic
         </Typography>
-        {courses.length === 0 ? (
+        {loading ? (
+          <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+            <CircularProgress />
+          </Box>
+        ) : courses.length === 0 ? (
           <Typography color="error">Cannot create a topic without a course.</Typography>
         ) : (
           <form onSubmit={formik.handleSubmit}>
-            { !courseId && (
-              <Box mb={2}>
-                <TextField
-                  fullWidth
-                  select
-                  label="Select Course"
-                  name="courseId"
-                  value={formik.values.courseId}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.courseId && Boolean(formik.errors.courseId)}
-                  helperText={formik.touched.courseId && formik.errors.courseId}
-                >
-                  {courses.map((course) => (
-                    <MenuItem key={course.id} value={course.id}>
-                      {course.title}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Box>
-            )}
+            <Box mb={2}>
+              <TextField
+                fullWidth
+                select
+                label="Select Course"
+                name="courseId"
+                value={formik.values.courseId}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.courseId && Boolean(formik.errors.courseId)}
+                helperText={formik.touched.courseId && formik.errors.courseId}
+              >
+                {courses.map((course) => (
+                  <MenuItem key={course.id} value={course.id}>
+                    {course.id}. {course.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
             <Box mb={2}>
               <TextField
                 fullWidth
