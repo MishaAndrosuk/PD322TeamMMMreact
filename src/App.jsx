@@ -11,21 +11,25 @@ import CreateTopicPage from './pages/topicsPage/Create.jsx';
 import UpdateTopicPage from './pages/topicsPage/Edit.jsx';
 import CreateTestPage from './pages/testsPage/Create.jsx';
 import UpdateTestPage from './pages/testsPage/Edit.jsx';
+import NotFound from './pages/notFound/NotFound';
+import DefaulLayout from './components/layout/DefaultLayout';
 
 function App() {
   return (
     <GoogleOAuthProvider clientId="47235399203-5dbvs4krmn7oao0p2fk1102dpam9vgsb.apps.googleusercontent.com">
       <Routes>
-        <Route path="/log" element={<Login />} />
-        <Route path="/reg" element={<Register />} />
-        <Route path="/" element={<MainPage />} />
-        <Route path="/course/create" element={<CreateCoursePage />} />
-        <Route path="/course/update" element={<UpdateCoursePage />} />
-        <Route path="/topic/create" element={<CreateTopicPage />} />
-        <Route path="/topic/update" element={<UpdateTopicPage />} />
-        <Route path="/test/create" element={<CreateTestPage />} />
-        <Route path="/test/update" element={<UpdateTestPage />} />
-
+        <Route path="/" element={<DefaulLayout />} >
+          <Route index element={<MainPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/course/create" element={<CreateCoursePage />} />
+          <Route path="/course/update" element={<UpdateCoursePage />} />
+          <Route path="/topic/create" element={<CreateTopicPage />} />
+          <Route path="/topic/update" element={<UpdateTopicPage />} />
+          <Route path="/test/create" element={<CreateTestPage />} />
+          <Route path="/test/update" element={<UpdateTestPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </GoogleOAuthProvider>
   );
