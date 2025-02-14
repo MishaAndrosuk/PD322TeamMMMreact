@@ -10,26 +10,23 @@ const CreateCoursePage = () => {
     const navigate = useNavigate(); 
 
     const validationSchema = Yup.object({
-        title: Yup.string()
+        name: Yup.string()
             .required("Course title is required"),
         description: Yup.string()
-            .required("Description is required")
-            .test("min-words", "Description must contain at least 20 words", value =>
-                value ? value.trim().split(/\s+/).length >= 20 : false
-            ),
+            .required("Description is required"),
         teacher_name: Yup.string()
             .matches(/^[A-Za-z\s]+$/, "Name of teacher must contain only letters.")
             .required("Teacher's name is required"),
         price: Yup.number()
             .typeError("Enter a valid price")
-            .positive("Price must be a positive number")
+            .min(0, "Price must be at least 0")
             .required("Price is required"),
         subject: Yup.string().required("Subject is required"),
     });
 
     const formik = useFormik({
         initialValues: {
-            title: "",
+            name: "",
             description: "",
             teacher_name: "",
             price: "",
@@ -37,9 +34,10 @@ const CreateCoursePage = () => {
         },
         validationSchema,
         onSubmit: (values) => {
-            createCourse({ ...values, created_at: new Date().toISOString() })
-                .then((course) => {
-                    navigate(`/topic/create/${course.id}`);
+            createCourse(values)
+            .then((response) => {
+                    console.log("Course created:", response.data);
+                    navigate(`/topic/create/${response.data.courseId}`);
                 })
                 .catch((error) => {
                     console.error("Error creating course:", error);
@@ -52,7 +50,7 @@ const CreateCoursePage = () => {
 
         if (!formik.isValid) {
             formik.setTouched({
-                title: true,
+                name: true,
                 description: true,
                 teacher_name: true,
                 price: true,
@@ -69,7 +67,7 @@ const CreateCoursePage = () => {
 
         if (!formik.isValid) {
             formik.setTouched({
-                title: true,
+                name: true,
                 description: true,
                 teacher_name: true,
                 price: true,
@@ -92,13 +90,13 @@ const CreateCoursePage = () => {
                     <Box mb={2}>
                         <TextField
                             fullWidth
-                            label="Course Title"
-                            name="title"
-                            value={formik.values.title}
+                            label="Course Name"
+                            name="name"
+                            value={formik.values.name}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            error={formik.touched.title && Boolean(formik.errors.title)}
-                            helperText={formik.touched.title && formik.errors.title}
+                            error={formik.touched.name && Boolean(formik.errors.name)}
+                            helperText={formik.touched.name && formik.errors.name}
                         />
                     </Box>
                     <Box mb={2}>

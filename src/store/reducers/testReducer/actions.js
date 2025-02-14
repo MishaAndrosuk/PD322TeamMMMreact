@@ -14,7 +14,10 @@ export const fetchTestsByTopic = (topicId) => async (dispatch) => {
 
 export const createTest = (topicId, testData) => async (dispatch) => {
     try {
-        const response = await axios.post(`create/test/${topicId}`, testData);
+        const response = await axios.post(`create/test/${topicId}`, {
+            topic_id: topicId,
+            ...testData
+        });
         dispatch({ type: "CREATE_TEST", payload: response.data });
     } catch (error) {
         console.error("createTest error:", error);
@@ -23,7 +26,10 @@ export const createTest = (topicId, testData) => async (dispatch) => {
 
 export const editTest = (testId, updatedData) => async (dispatch) => {
     try {
-        const response = await axios.put(`edit/test/${testId}`, updatedData);
+        const response = await axios.put(`edit/test/${testId}`, {
+            topic_id: updatedData.topic_id ?? null,
+            ...updatedData
+        });
         dispatch({ type: "EDIT_TEST", payload: response.data });
     } catch (error) {
         console.error("editTest error:", error);
@@ -33,7 +39,9 @@ export const editTest = (testId, updatedData) => async (dispatch) => {
 export const deleteTest = (testId) => async (dispatch) => {
     try {
         await axios.delete(`delete/test/${testId}`);
-        dispatch({ type: "DELETE_TEST", payload: testId });
+        if (response.status === 204) {
+            dispatch({ type: "DELETE_TEST", payload: testId });
+        }
     } catch (error) {
         console.error("deleteTest error:", error);
     }
