@@ -39,7 +39,7 @@ const CreateTopicPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      courseId: courseId || "", // якщо courseId передається через URL, воно буде автоматично встановлено
+      courseId: courseId || "",
       title: "",
       description: "",
     },
@@ -75,15 +75,15 @@ const CreateTopicPage = () => {
                 select
                 label="Select Course"
                 name="courseId"
-                value={formik.values.courseId}
+                value={String(formik.values.courseId)}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.courseId && Boolean(formik.errors.courseId)}
                 helperText={formik.touched.courseId && formik.errors.courseId}
               >
                 {courses.map((course) => (
-                  <MenuItem key={course.id} value={course.id}>
-                    {course.id}. {course.name}
+                  <MenuItem key={String(course.id)} value={String(course.id)}>
+                  {course.id}. {course.name}
                   </MenuItem>
                 ))}
               </TextField>
