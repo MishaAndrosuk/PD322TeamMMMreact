@@ -4,46 +4,52 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { useAction } from "../../hooks/useAction";
+import { useParams, useNavigate } from "react-router-dom";
 
-const EditCoursePage = ({ courseId }) => {
+const EditCoursePage = () => {
     const { editCourse, fetchTopics } = useAction();
-    const dispatch = useDispatch();
-    const [initialValues, setInitialValues] = useState(null);
+    const { courseId } = useParams();
+    const navigate = useNavigate();
 
-    // const course = fetchTopics(courseId);
+    const [initialValues, setInitialValues] = useState({
+        name: "",
+        description: "",
+        teacher_name: "",
+        price: "",
+        subject: "",
+    });
+
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchCourseData = async () => {
             try {
-                const response = await dispatch(fetchTopics(courseId));
-                if (response) {
-                    setInitialValues ({
-                        title: response.course_name,
-                        description: response.description,
-                        teacher_name: response.teacher_name,
-                        price: response.price,
-                        subject: response.subject,
+                const courseData = await fetchTopics(courseId);
+                if (courseData) {
+                    setInitialValues({
+                        name: courseData.name || "",
+                        description: courseData.description || "",
+                        teacher_name: courseData.teacher_name || "",
+                        price: courseData.price || "",
+                        subject: courseData.subject || "",
                     });
                 }
             } catch (error) {
-                console.error("Error fetching course data:", error);
+                console.error("Error fetching course:", error);
             }
         };
-        fetchData();
-    }, [courseId, dispatch]);
+    
+        fetchCourseData();
+    }, []);
 
     const validationSchema = Yup.object({
-        title: Yup.string().required("Course title is required"),
+        name: Yup.string().required("Course name is required"),
         description: Yup.string()
-            .required("Description is required")
-            .test("min-words", "Description must contain at least 20 words", value =>
-                value ? value.trim().split(/\s+/).length >= 20 : false
-            ),
+            .required("Description is required"),
         teacher_name: Yup.string()
             .matches(/^[A-Za-z\s]+$/, "Name of teacher must contain only letters.")
             .required("Teacher's name is required"),
         price: Yup.number()
             .typeError("Enter a valid price")
-            .positive("Price must be a positive number")
+            .min(0, "Price must be a positive number or zero")
             .required("Price is required"),
         subject: Yup.string().required("Subject is required"),
     });
@@ -53,7 +59,13 @@ const EditCoursePage = ({ courseId }) => {
         enableReinitialize: true,
         validationSchema,
         onSubmit: (values) => {
-            editCourse(courseId, values);
+            editCourse(courseId, values)
+            .then(() => {
+                navigate("/"); 
+            })
+            .catch((err) => {
+                console.error("Error creating topic:", err);
+            });
         },
     });
 
@@ -67,13 +79,13 @@ const EditCoursePage = ({ courseId }) => {
                     <Box mb={2}>
                         <TextField
                             fullWidth
-                            label="Course Title"
-                            name="title"
-                            value={formik.values.title}
+                            label="Course Name"
+                            name="name"
+                            value={formik.values.name}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            error={formik.touched.title && Boolean(formik.errors.title)}
-                            helperText={formik.touched.title && formik.errors.title}
+                            error={formik.touched.name && Boolean(formik.errors.name)}
+                            helperText={formik.touched.name && formik.errors.name}
                         />
                     </Box>
                     <Box mb={2}>
@@ -128,7 +140,7 @@ const EditCoursePage = ({ courseId }) => {
                         />
                     </Box>
                     <Button type="submit" variant="contained" color="primary" fullWidth>
-                        Update Course
+                        Save Changes
                     </Button>
                 </form>
             </Paper>
