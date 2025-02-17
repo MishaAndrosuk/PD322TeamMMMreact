@@ -25,7 +25,7 @@ const CreateTopicPage = () => {
     } else {
       setLoading(false);
     }
-  }, [courses, fetchCourses]);
+  }, []);
 
   const validationSchema = Yup.object({
     courseId: Yup.string().required("Course is required"),
