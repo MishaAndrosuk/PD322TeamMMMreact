@@ -21,26 +21,24 @@ import { useAction } from "../../../hooks/useAction";
 import { useTranslation } from "react-i18next";
 
 const Login = () => {
-    const { signIn } = useAction();
+    const { signIn, loginUser } = useAction();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
 
     const [error, setError] = React.useState("");
 
-    const handleSubmit = (values) => {
-        const storedEmail = localStorage.getItem("email");
-        const storedPassword = localStorage.getItem("password");
-
-        if (values.email === storedEmail) {
-            if (values.password === storedPassword) {
-                localStorage.setItem("isAuthSuccess", "true");
+    const handleSubmit = async (values) => {
+        try {
+            const response = await loginUser(values);
+            if (response.status === 200) {
                 navigate("/");
-            } else {
-                setError("Невірний пароль");
             }
-        } else {
-            setError("Користувача не існує");
+            if (response.status === 400){
+                setError(response.message)
+            }
+        } catch (err) {
+            setError("Something went wrong");
         }
     };
 

@@ -19,8 +19,9 @@ import { jwtDecode } from "jwt-decode";
 
 
 const Register = () => {
-    const { signUp } = useAction();
+    const { signUp, registerUser } = useAction();
     const navigate = useNavigate();
+    const [error, setError] = React.useState("");
 
     const googleErrorHandler = () => {
         console.log("Google auth error");
@@ -36,18 +37,28 @@ const Register = () => {
         password: Yup.string()
             .required("Вкажіть пароль")
             .min(6, "Мінімальна довжина паролю 6 символів"),
-        firstName: Yup.string().required("Вкажіть своє ім'я"),
-        lastName: Yup.string().required("Вкажіть своє прізвище"),
+        first_name: Yup.string().required("Вкажіть своє ім'я"),
+        last_name: Yup.string().required("Вкажіть своє прізвище"),
     });
 
-    const submitHandler = (values) => {
-        localStorage.setItem("firstName", values.firstName);
-        localStorage.setItem("lastName", values.lastName);
-        localStorage.setItem("email", values.email);
-        localStorage.setItem("password", values.password);
-        localStorage.setItem("isAuthSuccess", "true");
+    const submitHandler = async (values) => {
+        try {
+            const response = await registerUser(values);
+            if (response.status === 200) {
+                navigate("/");
+            }
+            if (response.status === 400) {
+                const errors = Object.values(response.message);
 
-        navigate("/");
+                if (errors.length > 0) {
+                    setError(errors[0][0]);
+                } else {
+                    setError("Something went wrong");
+                }
+            }
+        } catch (err) {
+            setError("Something went wrong");
+        }
     };
 
     const googleSuccessHandler = (credentials) => {
@@ -64,8 +75,8 @@ const Register = () => {
         initialValues: {
             email: "",
             password: "",
-            firstName: "",
-            lastName: "",
+            first_name: "",
+            last_name: "",
         },
         onSubmit: submitHandler,
         validationSchema: validationSchema,
@@ -102,13 +113,13 @@ const Register = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="given-name"
-                                name="firstName"
+                                name="first_name"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="first_name"
                                 label="First Name"
                                 autoFocus
-                                value={formik.values.firstName}
+                                value={formik.values.first_name}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 sx={{
@@ -117,9 +128,9 @@ const Register = () => {
                                     boxShadow: "inset 4px 4px 8px #d0d0d0, inset -4px -4px 8px #ffffff",
                                 }}
                             />
-                            {formik.touched.firstName && formik.errors.firstName ? (
+                            {formik.touched.first_name && formik.errors.first_name ? (
                                 <Typography color="error" variant="body2">
-                                    {formik.errors.firstName}
+                                    {formik.errors.first_name}
                                 </Typography>
                             ) : null}
                         </Grid>
@@ -127,11 +138,11 @@ const Register = () => {
                             <TextField
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="last_name"
                                 label="Last Name"
-                                name="lastName"
+                                name="last_name"
                                 autoComplete="family-name"
-                                value={formik.values.lastName}
+                                value={formik.values.last_name}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 sx={{
@@ -140,9 +151,9 @@ const Register = () => {
                                     boxShadow: "inset 4px 4px 8px #d0d0d0, inset -4px -4px 8px #ffffff",
                                 }}
                             />
-                            {formik.touched.lastName && formik.errors.lastName ? (
+                            {formik.touched.last_name && formik.errors.last_name ? (
                                 <Typography color="error" variant="body2">
-                                    {formik.errors.lastName}
+                                    {formik.errors.last_name}
                                 </Typography>
                             ) : null}
                         </Grid>
@@ -192,6 +203,11 @@ const Register = () => {
                                     {formik.errors.password}
                                 </Typography>
                             ) : null}
+                            {error && (
+                                <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+                                    {error}
+                                </Typography>
+                            )}
                         </Grid>
                     </Grid>
                     <Button

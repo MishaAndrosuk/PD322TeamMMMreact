@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Login from './pages/authPage/login/Login.jsx';
@@ -13,8 +13,25 @@ import CreateTestPage from './pages/testsPage/Create.jsx';
 import EditTestPage from './pages/testsPage/Edit.jsx';
 import NotFound from './pages/notFound/NotFound';
 import DefaulLayout from './components/layout/DefaultLayout';
+import ProfilePage from './pages/userPages/ProfilePage.jsx';
+import EditProfilePage from './pages/userPages/EditProfilePage.jsx';
+
+import { useAction } from './hooks/useAction.js';
+import { useSelector } from "react-redux";
 
 function App() {
+  const { getMe } = useAction();
+  const { isAuth } = useSelector((state) => state.userReducer);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      await getMe();
+    };
+    
+    fetchData();
+  }, []);
+
+
   return (
     <GoogleOAuthProvider clientId="47235399203-5dbvs4krmn7oao0p2fk1102dpam9vgsb.apps.googleusercontent.com">
       <Routes>
@@ -29,6 +46,12 @@ function App() {
           <Route path="/topic/edit/:topicId" element={<EditTopicPage />} />
           <Route path="/test/create/:topicId" element={<CreateTestPage />} />
           <Route path="/test/edit/:testId" element={<EditTestPage />} />
+          {isAuth && (
+            <>
+              <Route path="/user/profile" element={<ProfilePage />}/>
+              <Route path="/user/profile/edit" element={<EditProfilePage />}/>
+            </>
+          )}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
