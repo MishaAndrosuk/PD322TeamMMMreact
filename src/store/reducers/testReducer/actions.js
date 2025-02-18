@@ -15,7 +15,7 @@ export const fetchTestsByTopic = (topicId) => async (dispatch) => {
 export const createTest = (topicId, testData) => async (dispatch) => {
     try {
         const response = await axios.post(`create/test/${topicId}`, {
-            topic_id: topicId,
+            topicId: topicId,
             ...testData
         });
         dispatch({ type: "CREATE_TEST", payload: response.data });
@@ -27,7 +27,7 @@ export const createTest = (topicId, testData) => async (dispatch) => {
 export const editTest = (testId, updatedData) => async (dispatch) => {
     try {
         const response = await axios.put(`edit/test/${testId}`, {
-            topic_id: updatedData.topic_id ?? null,
+            topicId: updatedData.topicId ?? null,
             ...updatedData
         });
         dispatch({ type: "EDIT_TEST", payload: response.data });

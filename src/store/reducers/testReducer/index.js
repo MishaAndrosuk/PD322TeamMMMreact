@@ -21,9 +21,6 @@ export const TestReducer = (state = initialTestsState, action) => {
         case "DELETE_TEST":
             return { ...state, tests: state.tests.filter(test => test.id !== action.payload) };
 
-        case "CREATE_TEST_WITH_ANSWERS":
-            return { ...state, tests: [...state.tests, action.payload] };
-
         case "CREATE_ANSWER_OPTION":
             return {
                 ...state,
