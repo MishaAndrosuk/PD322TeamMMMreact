@@ -5,9 +5,11 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 export const fetchCourses = () => async (dispatch) => {
     try {
         const response = await axios.get('courses/');
-        dispatch({ type: "FETCH_COURSES", payload: response.data.courses });
+        dispatch({ type: "FETCH_COURSES", payload: response.data });
+        return response.data;
     } catch (error) {
         console.error("Error fetching courses:", error);
+        return [];
     }
 };
 

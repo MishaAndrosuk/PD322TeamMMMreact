@@ -16,12 +16,7 @@ const CreateTopicPage = () => {
 
   useEffect(() => {
     if (courses.length === 0) {
-      fetchCourses().then(() => {
-        setLoading(false);
-      }).catch((error) => {
-        console.error("Error fetching courses:", error);
-        setLoading(false);
-      });
+      fetchCourses().finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
@@ -83,7 +78,7 @@ const CreateTopicPage = () => {
               >
                 {courses.map((course) => (
                   <MenuItem key={String(course.id)} value={String(course.id)}>
-                  {course.id}. {course.name}
+                    {course.id}. {course.name}
                   </MenuItem>
                 ))}
               </TextField>

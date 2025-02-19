@@ -16,13 +16,15 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 
 const CreateTestPage = () => {
-  const { createTest, fetchCourses, fetchTopics } = useAction();
+  const { createTest, fetchCourses, fetchTopics, createAnswerOption } =
+    useAction();
   const courses = useSelector((state) => state.courseReducer.courses || []);
   const [topics, setTopics] = useState([]);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState([
@@ -67,7 +69,14 @@ const CreateTestPage = () => {
       createTest(values.topicId, {
         question_text: values.question,
         answer_options: values.answers,
-      }).then(() => navigate("/"));
+      }).then((response) => {
+        console.log("Test created:", response);
+        values.answers.forEach((answer) => {
+          createAnswerOption(response.testId, answer).then(() => {
+            navigate("/");
+          });
+        });
+      });
     },
   });
 
@@ -75,7 +84,7 @@ const CreateTestPage = () => {
     const courseId = e.target.value;
     formik.setFieldValue("courseId", courseId);
     formik.setFieldValue("topicId", "");
-  
+
     try {
       const courseData = await fetchTopics(courseId);
       if (courseData?.topics) {
@@ -136,9 +145,7 @@ const CreateTestPage = () => {
                 name="courseId"
                 value={formik.values.courseId}
                 onChange={handleCourseChange}
-                error={
-                  formik.touched.courseId && Boolean(formik.errors.courseId)
-                }
+                error={formik.touched.courseId && Boolean(formik.errors.courseId)}
                 helperText={formik.touched.courseId && formik.errors.courseId}
               >
                 {courses.map((course) => (
@@ -211,12 +218,11 @@ const CreateTestPage = () => {
               </Box>
             ))}
             <Button
-              fullWidth
               onClick={handleAddAnswer}
+              startIcon={<AddIcon />}
               disabled={answers.length >= 6}
-              variant="outlined"
             >
-              Add Another Answer
+              Add Option
             </Button>
             <Button
               type="submit"

@@ -7,6 +7,9 @@ export const TestReducer = (state = initialTestsState, action) => {
         case "FETCH_TESTS_BY_TOPIC":
             return { ...state, tests: action.payload };
 
+        case "GET_TEST":
+            return { ...state, tests: [action.payload] };
+
         case "CREATE_TEST":
             return { ...state, tests: [...state.tests, action.payload] };
 
@@ -54,8 +57,8 @@ export const TestReducer = (state = initialTestsState, action) => {
                         ? {
                               ...test,
                               answer_options: test.answer_options.filter(
-                                  answer => answer.id !== action.payload.answerOptionId
-                              )
+                                answer => answer.id !== action.payload
+                            )
                           }
                         : test
                 )
