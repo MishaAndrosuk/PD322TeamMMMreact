@@ -44,7 +44,7 @@ function App() {
           <Route path="/topic/create/:courseId" element={<CreateTopicPage />} />
           <Route path="/topic/create" element={<CreateTopicPage />} />
           <Route path="/topic/edit/:topicId" element={<EditTopicPage />} />
-          <Route path="/test/create/:topicId" element={<CreateTestPage />} />
+          <Route path="/test/create" element={<CreateTestPage />} />
           <Route path="/test/edit/:testId" element={<EditTestPage />} />
           {isAuth && (
             <>

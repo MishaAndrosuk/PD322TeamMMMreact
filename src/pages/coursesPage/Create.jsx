@@ -35,13 +35,13 @@ const CreateCoursePage = () => {
         validationSchema,
         onSubmit: (values) => {
             createCourse(values)
-            .then((response) => {
-                    console.log("Course created:", response.data);
-                    navigate(`/topic/create/${response.data.courseId}`);
-                })
-                .catch((error) => {
-                    console.error("Error creating course:", error);
-                });
+            // .then((response) => {
+            //         console.log("Course created:", response.data);
+            //         navigate(`/topic/create/${response.data.courseId}`);
+            //     })
+            //     .catch((error) => {
+            //         console.error("Error creating course:", error);
+            //     });
         },
     });
 
