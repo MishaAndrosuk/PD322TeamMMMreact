@@ -64,10 +64,8 @@ const Register = () => {
     const googleSuccessHandler = (credentials) => {
         const token = credentials.credential;
         signUp(token);
-        const user = jwtDecode(token);
         localStorage.setItem("user", token);
         localStorage.setItem("isAuthSuccess", "true");
-        localStorage.setItem("firstName", user.given_name);
         navigate("/");
     };
 
