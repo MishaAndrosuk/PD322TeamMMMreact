@@ -7,7 +7,7 @@ import { UserReducer } from "./userReducer";
 
 export const rootReducer = combineReducers({
     authReducer: AuthReducer,
-    courseReducer: CourseReducer,
+    coursesReduser: CourseReducer,
     testReducer: TestReducer,
     topicReducer: TopicReducer,
     userReducer: UserReducer

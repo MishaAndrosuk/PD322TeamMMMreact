@@ -35,7 +35,7 @@ function App() {
 
 
   return (
-    <GoogleOAuthProvider clientId="47235399203-5dbvs4krmn7oao0p2fk1102dpam9vgsb.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="473323501816-6sdgejbvth549j197rqlj1m8e1r4ag0h.apps.googleusercontent.com">
       <Routes>
         <Route path="/" element={<DefaulLayout />} >
           <Route index element={<MainPage />} />

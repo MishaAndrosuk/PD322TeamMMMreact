@@ -18,13 +18,11 @@ import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { useAction } from "../../../hooks/useAction";
-import { useTranslation } from "react-i18next";
 
 const Login = () => {
     const { signIn, loginUser } = useAction();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { t, i18n } = useTranslation();
 
     const [error, setError] = React.useState("");
 
@@ -45,10 +43,8 @@ const Login = () => {
     const googleSuccessHandler = (credentials) => {
         const token = credentials.credential;
         signIn(token);
-        const user = jwtDecode(token);
         localStorage.setItem("user", token);
         localStorage.setItem("isAuthSuccess", "true");
-        localStorage.setItem("firstName", user.given_name);
         navigate("/");
     };
 

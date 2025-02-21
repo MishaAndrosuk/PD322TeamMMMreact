@@ -4,8 +4,8 @@ import "./Footer.css";
 
 const Footer = () => {
     return (
-        <Box 
-            component="footer" 
+        <Box
+            component="footer"
             sx={{
                 backgroundColor: "#f1f1f1",
                 padding: "10px",
@@ -13,7 +13,8 @@ const Footer = () => {
                 fontSize: "1em",
                 color: "#333",
                 width: "100%",
-                marginTop: "auto",
+                marginTop: "20px",  // Додаємо відступ зверху
+                position: "relative",  // Заміна на relative, щоб футер не перекривав контент
             }}
         >
             <Typography variant="body1" sx={{ margin: 0, fontWeight: 400 }}>
