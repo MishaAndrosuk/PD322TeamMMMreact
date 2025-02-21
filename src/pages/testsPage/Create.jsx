@@ -66,6 +66,7 @@ const CreateTestPage = () => {
     },
     validationSchema,
     onSubmit: (values) => {
+      console.log("Create Test:", values);
       createTest(values.topicId, {
         question_text: values.question,
         answer_options: values.answers,
@@ -145,7 +146,9 @@ const CreateTestPage = () => {
                 name="courseId"
                 value={formik.values.courseId}
                 onChange={handleCourseChange}
-                error={formik.touched.courseId && Boolean(formik.errors.courseId)}
+                error={
+                  formik.touched.courseId && Boolean(formik.errors.courseId)
+                }
                 helperText={formik.touched.courseId && formik.errors.courseId}
               >
                 {courses.map((course) => (

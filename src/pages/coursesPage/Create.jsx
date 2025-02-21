@@ -35,13 +35,7 @@ const CreateCoursePage = () => {
         validationSchema,
         onSubmit: (values) => {
             createCourse(values)
-            // .then((response) => {
-            //         console.log("Course created:", response.data);
-            //         navigate(`/topic/create/${response.data.courseId}`);
-            //     })
-            //     .catch((error) => {
-            //         console.error("Error creating course:", error);
-            //     });
+            console.log("Course created:", values);
         },
     });
 
@@ -150,7 +144,7 @@ const CreateCoursePage = () => {
                             helperText={formik.touched.subject && formik.errors.subject}
                         />
                     </Box>
-                    <Button
+                    {/* <Button
                         type="button"
                         variant="contained"
                         color="secondary"
@@ -158,7 +152,7 @@ const CreateCoursePage = () => {
                         onClick={handleAddTopic}
                     >
                         Add Topic
-                    </Button>
+                    </Button> */}
                     <Button
                         type="button"
                         variant="contained"

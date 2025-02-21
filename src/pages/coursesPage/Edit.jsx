@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { TextField, Button, Container, Typography, Paper, Box } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
 import { useAction } from "../../hooks/useAction";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -24,6 +23,7 @@ const EditCoursePage = () => {
             try {
                 const courseData = await fetchTopics(courseId);
                 if (courseData) {
+                    console.log("Course data:", courseData);
                     setInitialValues({
                         name: courseData.name || "",
                         description: courseData.description || "",

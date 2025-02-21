@@ -6,7 +6,6 @@ export const fetchTopics = (courseId) => async (dispatch) => {
     try {
         const response = await axios.get(`course/${courseId}/topics/`);
         dispatch({ type: "FETCH_TOPICS", payload: response.data });
-        console.log("Topics", response.data);
         return response.data;
     } catch (error) {
         console.error("fetchTopics error:", error);

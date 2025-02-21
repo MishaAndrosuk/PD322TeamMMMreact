@@ -82,7 +82,7 @@ const EditTestPage = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values, answers, deletedAnswers);
+      console.log(values, answers);
       editTest(testId, {
         question_text: values.question,
         topicId: values.topicId,
