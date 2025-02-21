@@ -3,6 +3,7 @@ const initialCoursesState = {
 };
 
 export const CourseReducer = (state = initialCoursesState, action) => {
+    console.log("Reducer action:", action.type, "Payload:", action.payload);
     switch (action.type) {
         case "FETCH_COURSES":
             return { ...state, courses: action.payload };

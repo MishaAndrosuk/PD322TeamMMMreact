@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useAction } from "../../hooks/useAction";
 import { useSelector } from "react-redux";
-import { TextField, Button, Container, Typography, Paper, Box, MenuItem, CircularProgress } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Paper,
+  Box,
+  MenuItem,
+  CircularProgress,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useParams, useNavigate } from "react-router-dom";
@@ -9,9 +18,8 @@ import { useParams, useNavigate } from "react-router-dom";
 const CreateTopicPage = () => {
   const { createTopic, fetchCourses } = useAction();
   const courses = useSelector((state) => state.courseReducer.courses || []);
-  const { courseId } = useParams();
   const navigate = useNavigate();
-  
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,22 +35,28 @@ const CreateTopicPage = () => {
     title: Yup.string().required("Topic title is required"),
     description: Yup.string()
       .required("Description is required")
-      .test("min-words", "Description must contain at least 20 words", (value) =>
-        value ? value.trim().split(/\s+/).length >= 20 : false
+      .test(
+        "min-words",
+        "Description must contain at least 20 words",
+        (value) => (value ? value.trim().split(/\s+/).length >= 20 : false)
       ),
   });
 
   const formik = useFormik({
     initialValues: {
-      courseId: courseId || "",
+      courseId: "",
       title: "",
       description: "",
     },
     validationSchema,
     onSubmit: (values) => {
-      createTopic(values.courseId, { title: values.title, description: values.description })
+      console.log("Create Topic:", values);
+      createTopic(values.courseId, {
+        title: values.title,
+        description: values.description,
+      })
         .then(() => {
-          navigate("/"); 
+          navigate("/");
         })
         .catch((err) => {
           console.error("Error creating topic:", err);
@@ -57,11 +71,18 @@ const CreateTopicPage = () => {
           Create Topic
         </Typography>
         {loading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="200px"
+          >
             <CircularProgress />
           </Box>
         ) : courses.length === 0 ? (
-          <Typography color="error">Cannot create a topic without a course.</Typography>
+          <Typography color="error">
+            Cannot create a topic without a course.
+          </Typography>
         ) : (
           <form onSubmit={formik.handleSubmit}>
             <Box mb={2}>
@@ -73,7 +94,9 @@ const CreateTopicPage = () => {
                 value={String(formik.values.courseId)}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.courseId && Boolean(formik.errors.courseId)}
+                error={
+                  formik.touched.courseId && Boolean(formik.errors.courseId)
+                }
                 helperText={formik.touched.courseId && formik.errors.courseId}
               >
                 {courses.map((course) => (
@@ -103,8 +126,13 @@ const CreateTopicPage = () => {
                 value={formik.values.description}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.description && Boolean(formik.errors.description)}
-                helperText={formik.touched.description && formik.errors.description}
+                error={
+                  formik.touched.description &&
+                  Boolean(formik.errors.description)
+                }
+                helperText={
+                  formik.touched.description && formik.errors.description
+                }
                 multiline
                 rows={4}
               />

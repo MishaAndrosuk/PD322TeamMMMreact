@@ -15,6 +15,8 @@ import NotFound from './pages/notFound/NotFound';
 import DefaulLayout from './components/layout/DefaultLayout';
 import ProfilePage from './pages/userPages/ProfilePage.jsx';
 import EditProfilePage from './pages/userPages/EditProfilePage.jsx';
+import ShowCoursePage from './pages/coursesPage/ShowCourse.jsx';
+import ShowTopicPage from './pages/topicsPage/ShowTopic.jsx';
 
 import { useAction } from './hooks/useAction.js';
 import { useSelector } from "react-redux";
@@ -46,6 +48,8 @@ function App() {
           <Route path="/topic/edit/:topicId" element={<EditTopicPage />} />
           <Route path="/test/create" element={<CreateTestPage />} />
           <Route path="/test/edit/:testId" element={<EditTestPage />} />
+          <Route path="/course/:courseId" element={<ShowCoursePage />} />
+          <Route path="/topic/:topicId" element={<ShowTopicPage />} />
           {isAuth && (
             <>
               <Route path="/user/profile" element={<ProfilePage />}/>

@@ -26,6 +26,7 @@ const EditTopicPage = () => {
                 await fetchCourses();
                 const topicData = await fetchTestsByTopic(topicId);
                 if (topicData) {
+                    console.log("Topic data:", topicData);
                     setInitialValues({
                         courseId: topicData.courseId || "",
                         title: topicData.title || "",
