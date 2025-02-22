@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCourses } from "../../store/reducers/courseReducer/actions";
+import { useSelector } from "react-redux";
+import { useAction } from "../../hooks/useAction";
 import { TextField, Button, Container, Typography, Box, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "./mainPage.css";
 
 function MainPage() {
-  const dispatch = useDispatch();
+  const { fetchCourses } = useAction();
   const { courses, loading, error } = useSelector((state) => state.coursesReduser);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    dispatch(fetchCourses());
-  }, [dispatch]);
+    fetchCourses();
+  }, []);
 
   const filteredCourses = courses.filter(
     (course) =>
