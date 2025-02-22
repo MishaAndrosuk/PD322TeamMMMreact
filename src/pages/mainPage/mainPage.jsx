@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useAction } from "../../hooks/useAction";
-import { TextField, Button, Container, Typography, Box, InputAdornment } from "@mui/material";
+import { TextField, Button, Container, Typography, Box, InputAdornment, Pagination } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "./mainPage.css";
 
 function MainPage() {
-
   const navigate = useNavigate();
 
   const { fetchCourses } = useAction();
   const { courses, loading, error } = useSelector((state) => state.coursesReduser);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const coursesPerPage = 9;
 
   useEffect(() => {
     fetchCourses();
@@ -24,8 +25,16 @@ function MainPage() {
       course.subject.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const indexOfLastCourse = currentPage * coursesPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+
   const handleCourseClick = (courseId) => {
     navigate(`/course/${courseId}`);
+  };
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
   return (
@@ -62,11 +71,16 @@ function MainPage() {
       {error && <Typography color="error">Error: {error}</Typography>}
 
       <Box className="course-container">
-        {filteredCourses.length === 0 ? (
+        {currentCourses.length === 0 ? (
           <Typography>No courses available</Typography>
         ) : (
-          filteredCourses.map((course) => (
-            <Box key={course.id} className="course-card" onClick={() => handleCourseClick(course.id)} style={{ cursor: "pointer" }}>
+          currentCourses.map((course) => (
+            <Box
+              key={course.id}
+              className="course-card"
+              onClick={() => handleCourseClick(course.id)}
+              style={{ cursor: "pointer" }}
+            >
               <Typography variant="h5" className="course-name">{course.name}</Typography>
               <Typography className="course-description">{course.description}</Typography>
               <Box className="course-footer">
@@ -75,6 +89,15 @@ function MainPage() {
             </Box>
           ))
         )}
+      </Box>
+
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Pagination
+          count={Math.ceil(filteredCourses.length / coursesPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+        />
       </Box>
     </Container>
   );
