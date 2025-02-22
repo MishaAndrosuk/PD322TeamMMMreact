@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useAction } from "../../hooks/useAction";
 import { TextField, Button, Container, Typography, Box, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "./mainPage.css";
 
 function MainPage() {
+
+  const navigate = useNavigate();
+
   const { fetchCourses } = useAction();
   const { courses, loading, error } = useSelector((state) => state.coursesReduser);
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,19 +24,23 @@ function MainPage() {
       course.subject.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleCourseClick = (courseId) => {
+    navigate(`/course/${courseId}`);
+  };
+
   return (
     <Container>
       <Box sx={{ textAlign: "center", mt: 4, mb: 3, p: 3, bgcolor: "#f5f5f5", borderRadius: 2 }}>
         <Typography variant="h3" fontWeight="bold" color="primary">
-          Каталог курсів MMM
+          MMM Course Catalog
         </Typography>
         <Typography variant="h6" sx={{ mt: 1, mb: 2 }}>
-          Введіть сюди назву курсу або сферу, яка вас цікавить
+          Enter the course name or the field you are interested in
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
           <TextField
             variant="outlined"
-            placeholder="Пошук"
+            placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             sx={{ width: "40%" }}
@@ -45,7 +53,7 @@ function MainPage() {
             }}
           />
           <Button variant="contained" color="primary">
-            Пошук
+            Search
           </Button>
         </Box>
       </Box>
@@ -58,11 +66,11 @@ function MainPage() {
           <Typography>No courses available</Typography>
         ) : (
           filteredCourses.map((course) => (
-            <Box key={course.id} className="course-card">
+            <Box key={course.id} className="course-card" onClick={() => handleCourseClick(course.id)} style={{ cursor: "pointer" }}>
               <Typography variant="h5" className="course-name">{course.name}</Typography>
               <Typography className="course-description">{course.description}</Typography>
               <Box className="course-footer">
-                <Typography variant="h6" className="course-price">Ціна: {course.price} грн</Typography>
+                <Typography variant="h6" className="course-price">Price: {course.price}$</Typography>
               </Box>
             </Box>
           ))
