@@ -4,12 +4,14 @@ import { Container, Typography, Avatar, Button, Box, Paper, Divider, Dialog, Dia
 import { useNavigate } from "react-router-dom";
 import { APP_ENV } from "../../env";
 import { useAction } from "../../hooks/useAction";
+import { useTranslation } from 'react-i18next';
 
 const ProfilePage = () => {
     const { delete_user } = useAction();
     const user = useSelector((state) => state.userReducer.user);
     const [openDialog, setOpenDialog] = useState(false);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
 
     const handleDeleteAccount = async () => {
@@ -47,7 +49,7 @@ const ProfilePage = () => {
                         onClick={() => navigate("/user/profile/edit")}
                         sx={{ borderRadius: 2, textTransform: 'none', fontSize: '1rem' }}
                     >
-                        Edit Profile
+                       {t("profilePage.editProfile")}
                     </Button>
                     <Button
                         variant="contained"
@@ -56,22 +58,22 @@ const ProfilePage = () => {
                         onClick={() => setOpenDialog(true)}
                         sx={{ borderRadius: 2, textTransform: 'none', fontSize: '1rem' }}
                     >
-                        Delete Account
+                        {t("profilePage.deleteAccount")}
                     </Button>
                 </Box>
             </Paper>
 
             <Dialog open={openDialog} onClose={handleCancel}>
-                <DialogTitle>Confirm Account Deletion</DialogTitle>
+                <DialogTitle>{t('profilePage.confirmDeleteModal.confirmDelete')}</DialogTitle>
                 <DialogContent>
-                    <Typography>Are you sure you want to delete your account? This action cannot be undone.</Typography>
+                    <Typography>{t('profilePage.confirmDeleteModal.youSure')}</Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCancel} color="primary">
-                        Cancel
+                    {t('profilePage.confirmDeleteModal.cancelButton')}
                     </Button>
                     <Button onClick={handleDeleteAccount} color="error">
-                        Delete Account
+                    {t('profilePage.confirmDeleteModal.deleteButton')}
                     </Button>
                 </DialogActions>
             </Dialog>

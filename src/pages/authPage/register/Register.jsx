@@ -16,12 +16,14 @@ import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAction } from "../../../hooks/useAction";
 import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
 
 
 const Register = () => {
     const { signUp, registerUser } = useAction();
     const navigate = useNavigate();
     const [error, setError] = React.useState("");
+    const { t } = useTranslation();
 
     const googleErrorHandler = () => {
         console.log("Google auth error");
@@ -99,7 +101,7 @@ const Register = () => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-                    Register
+                    {t("registerPage.register")}
                 </Typography>
                 <Box
                     component="form"
@@ -115,7 +117,7 @@ const Register = () => {
                                 required
                                 fullWidth
                                 id="first_name"
-                                label="First Name"
+                                label={t("registerPage.firstName")}
                                 autoFocus
                                 value={formik.values.first_name}
                                 onChange={formik.handleChange}
@@ -137,7 +139,7 @@ const Register = () => {
                                 required
                                 fullWidth
                                 id="last_name"
-                                label="Last Name"
+                                label={t("registerPage.lastName")}
                                 name="last_name"
                                 autoComplete="family-name"
                                 value={formik.values.last_name}
@@ -160,7 +162,7 @@ const Register = () => {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email"
+                                label={t("registerPage.email")}
                                 name="email"
                                 autoComplete="email"
                                 value={formik.values.email}
@@ -183,7 +185,7 @@ const Register = () => {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label={t("registerPage.password")}
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
@@ -239,7 +241,7 @@ const Register = () => {
                             },
                         }}
                     >
-                        Register
+                        {t("registerPage.registerButton")}
                     </Button>
                     <Box sx={{ mb: 2 }}>
                         <GoogleLogin
@@ -252,7 +254,7 @@ const Register = () => {
                     <Grid container justifyContent="center" alignItems="center">
                         <Grid item>
                             <Link to="/login" style={{ textDecoration: "none" }}>
-                                Already have an account? Login
+                                {t("registerPage.alreadyHaveAccount")}
                             </Link>
                         </Grid>
                     </Grid>

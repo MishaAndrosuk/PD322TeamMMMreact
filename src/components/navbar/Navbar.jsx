@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Button, Box, Menu, MenuItem } from "@mui/material";
+import { AppBar, Toolbar, Button, Box, Menu, MenuItem, Typography } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import "./Navbar.css";
 import { useAction } from "../../hooks/useAction";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { APP_ENV } from "../../env";
+import { changeLanguage } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
     const { logoutUser } = useAction();
@@ -14,6 +16,8 @@ const Navbar = () => {
     const { isAuth, user } = useSelector((state) => state.userReducer);
     const [anchorEl, setAnchorEl] = useState(null);
     const [imgError, setImgError] = useState(false);
+
+    const { t } = useTranslation();
 
     const handleLogout = async () => {
         await logoutUser();
@@ -32,8 +36,12 @@ const Navbar = () => {
         setImgError(true);
     };
 
-    const avatarUrl = user?.avatar ? `${APP_ENV.REMOTE_HOST_NAME}${user.avatar}` : null;
+    const handleLanguageChange = (lng) => {
+        localStorage.setItem("language", lng);
+        changeLanguage(lng);
+    };
 
+    const avatarUrl = user?.avatar ? `${APP_ENV.REMOTE_HOST_NAME}${user.avatar}` : null;
 
     const avatar = avatarUrl && !imgError ? (
         <img
@@ -52,7 +60,10 @@ const Navbar = () => {
                 <Box component="div" sx={{ display: "flex", alignItems: "center" }}>
                     <Link to="/" className="logo">MMMCourses</Link>
                 </Box>
-                <Box sx={{ display: "flex", gap: "25px" }}>
+                <Box sx={{ display: "flex", gap: "25px", alignItems: "center" }}>
+                    <Typography onClick={() => handleLanguageChange("ua")} sx={{ color: "black", cursor: "pointer", ml: 1 }}>UA</Typography>
+                    <Typography onClick={() => handleLanguageChange("en")} sx={{ color: "black", cursor: "pointer", m: 1 }}>ENG</Typography>
+
                     {!isAuth && (
                         <>
                             <Button
@@ -68,7 +79,7 @@ const Navbar = () => {
                                     },
                                 }}
                             >
-                                Login
+                                {t("auth.login")}
                             </Button>
                             <Button
                                 component={Link}
@@ -83,7 +94,7 @@ const Navbar = () => {
                                     },
                                 }}
                             >
-                                Register
+                                {t("auth.register")}
                             </Button>
                         </>
                     )}
@@ -115,9 +126,9 @@ const Navbar = () => {
                                     to="/user/profile"
                                     onClick={handleClose}
                                 >
-                                    Profile
+                                    {t("auth.profile")}
                                 </MenuItem>
-                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                <MenuItem onClick={handleLogout}>{t('auth.logout')}</MenuItem>
                             </Menu>
                         </>
                     )}
@@ -125,6 +136,6 @@ const Navbar = () => {
             </Toolbar>
         </AppBar>
     );
-}
+};
 
 export default Navbar;
