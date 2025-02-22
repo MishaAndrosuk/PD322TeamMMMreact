@@ -7,7 +7,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import "./mainPage.css";
 
 function MainPage() {
+
   const navigate = useNavigate();
+
   const { fetchCourses } = useAction();
   const { courses, loading, error } = useSelector((state) => state.coursesReduser);
   const [searchQuery, setSearchQuery] = useState("");
