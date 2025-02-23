@@ -17,6 +17,7 @@ import ProfilePage from './pages/userPages/ProfilePage.jsx';
 import EditProfilePage from './pages/userPages/EditProfilePage.jsx';
 import ShowCoursePage from './pages/coursesPage/ShowCourse.jsx';
 import ShowTopicPage from './pages/topicsPage/ShowTopic.jsx';
+import "./locales/config";
 
 import { useAction } from './hooks/useAction.js';
 import { useSelector } from "react-redux";

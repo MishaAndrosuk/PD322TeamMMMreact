@@ -18,6 +18,7 @@ import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { useAction } from "../../../hooks/useAction";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
     const { signIn, loginUser } = useAction();
@@ -25,6 +26,7 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const [error, setError] = React.useState("");
+    const { t } = useTranslation();
 
     const handleSubmit = async (values) => {
         try {
@@ -92,7 +94,7 @@ const Login = () => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-                    Login
+                    {t("loginPage.login")}
                 </Typography>
                 <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ width: "100%" }}>
                     <TextField
@@ -101,7 +103,7 @@ const Login = () => {
                         fullWidth
                         id="email"
                         name="email"
-                        label="Email"
+                        label={t("loginPage.email")}
                         autoComplete="email"
                         autoFocus
                         variant="outlined"
@@ -124,7 +126,7 @@ const Login = () => {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label={t("loginPage.password")}
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -150,7 +152,7 @@ const Login = () => {
                     )}
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
+                        label={t("loginPage.rememberMe")}
                         sx={{ mb: 1 }}
                     />
                     <Button
@@ -160,7 +162,7 @@ const Login = () => {
                         color="primary"
                         sx={{ mt: 2, mb: 1, borderRadius: "10px" }}
                     >
-                        Login
+                        {t("loginPage.loginButton")}
                     </Button>
                     <Box sx={{ mb: 1 }}>
                         <GoogleLogin onSuccess={googleSuccessHandler} onError={googleErrorHandler} />
@@ -168,7 +170,7 @@ const Login = () => {
                     <Grid container justifyContent="center">
                         <Grid item>
                             <Link to="/register" style={{ textDecoration: 'none' }}>
-                                Don`t have an account? Register now
+                                {t("loginPage.dontHaveAccount")}
                             </Link>
                         </Grid>
                     </Grid>

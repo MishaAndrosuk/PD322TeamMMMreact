@@ -6,11 +6,13 @@ import { useSelector } from "react-redux";
 import { useAction } from "../../hooks/useAction";
 import { useNavigate } from "react-router-dom";
 import { APP_ENV } from "../../env";
+import { useTranslation } from "react-i18next";
 
 const EditProfilePage = () => {
     const { updateUser, updateAvatar } = useAction();
     const navigate = useNavigate();
     const user = useSelector((state) => state.userReducer.user);
+    const { t } = useTranslation();
 
     const validationSchema = Yup.object({
         email: Yup.string().required("Email required").email("Invalid email format"),
@@ -18,18 +20,18 @@ const EditProfilePage = () => {
         last_name: Yup.string().required("Last name required"),
         password: Yup.string().nullable().min(6, "Minimum 6 characters"),
         confirmPassword: Yup.string()
-        .nullable()
-        .oneOf([Yup.ref('password'), null], 'Passwords do not match')
-        .when('password', {
-            is: (value) => value?.length > 0,
-            then: (schema) => schema.required('Confirm Password is required'),
-        }),
+            .nullable()
+            .oneOf([Yup.ref('password'), null], 'Passwords do not match')
+            .when('password', {
+                is: (value) => value?.length > 0,
+                then: (schema) => schema.required('Confirm Password is required'),
+            }),
     });
 
     const submitHandler = async (values) => {
         const updatedValues = { ...values };
 
-        if (!updatedValues.password){
+        if (!updatedValues.password) {
             delete updatedValues.password;
             delete updatedValues.confirmPassword;
         }
@@ -49,7 +51,7 @@ const EditProfilePage = () => {
         validationSchema,
         onSubmit: submitHandler,
     });
-    
+
     useEffect(() => {
         if (user) {
             formik.setValues({
@@ -61,7 +63,7 @@ const EditProfilePage = () => {
             });
         }
     }, [user]);
-    
+
     const [avatar, setAvatar] = useState(null);
     const [avatarError, setAvatarError] = useState("");
 
@@ -91,7 +93,7 @@ const EditProfilePage = () => {
                     />
 
                     <Typography variant="h5" fontWeight={600}>
-                        Edit Profile
+                        {t("editProfilePage.editProfile")}
                     </Typography>
 
                     <Divider sx={{ width: '100%', my: 2 }} />
@@ -102,7 +104,7 @@ const EditProfilePage = () => {
                                 <TextField
                                     fullWidth
                                     id="email"
-                                    label="Email"
+                                    label={t("editProfilePage.email")}
                                     name="email"
                                     value={formik.values.email}
                                     onChange={formik.handleChange}
@@ -115,7 +117,7 @@ const EditProfilePage = () => {
                                 <TextField
                                     fullWidth
                                     id="first_name"
-                                    label="First name"
+                                    label={t("editProfilePage.firstName")}
                                     name="first_name"
                                     value={formik.values.first_name}
                                     onChange={formik.handleChange}
@@ -128,7 +130,7 @@ const EditProfilePage = () => {
                                 <TextField
                                     fullWidth
                                     id="last_name"
-                                    label="Last name"
+                                    label={t("editProfilePage.lastName")}
                                     name="last_name"
                                     value={formik.values.last_name}
                                     onChange={formik.handleChange}
@@ -141,7 +143,7 @@ const EditProfilePage = () => {
                                 <TextField
                                     fullWidth
                                     id="password"
-                                    label="Password"
+                                    label={t("editProfilePage.password")}
                                     type="password"
                                     name="password"
                                     value={formik.values.password}
@@ -155,7 +157,7 @@ const EditProfilePage = () => {
                                 <TextField
                                     fullWidth
                                     id="confirmPassword"
-                                    label="Confirm New Password"
+                                    label={t("editProfilePage.confirmPassword")}
                                     type="password"
                                     name="confirmPassword"
                                     value={formik.values.confirmPassword}
@@ -168,18 +170,18 @@ const EditProfilePage = () => {
                         </Grid>
 
                         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 3, borderRadius: 2 }}>
-                            Save
+                            {t("editProfilePage.saveButton")}
                         </Button>
                     </Box>
 
                     <Divider sx={{ width: '100%', my: 2 }} />
 
                     <Box component="form" onSubmit={handleAvatarSubmit} sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-                        <Typography variant="h6">Update avatar</Typography>
+                        <Typography variant="h6">{t('editProfilePage.updateAvatar')}</Typography>
                         <input type="file" accept="image/*" onChange={handleAvatarChange} />
                         {avatarError && <Typography color="error" variant="body2" sx={{ mb: 2 }}>{avatarError}</Typography>}
                         <Button type="submit" variant="contained" color="secondary" sx={{ mt: 2, borderRadius: 2 }}>
-                            Save new avatar
+                            {t("editProfilePage.sevaNewAvatarButton")}
                         </Button>
                     </Box>
 
