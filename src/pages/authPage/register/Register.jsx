@@ -51,6 +51,7 @@ const Register = () => {
 
     const submitHandler = async (values) => {
         try {
+            console.log("Register values:", values);
             const response = await registerUser(values);
             if (response.status === 200) {
                 navigate("/");

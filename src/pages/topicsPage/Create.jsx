@@ -17,7 +17,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const CreateTopicPage = () => {
   const { createTopic, fetchCourses } = useAction();
-  const courses = useSelector((state) => state.courseReducer.courses || []);
+  const { courses } = useSelector((state) => state.coursesReduser);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);

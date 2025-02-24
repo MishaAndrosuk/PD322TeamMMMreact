@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -11,14 +11,25 @@ import {
   Divider,
   Box,
   Paper,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import QuizIcon from "@mui/icons-material/Quiz";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import { useAction } from "../../hooks/useAction";
 
 const ShowCoursePage = () => {
   const { courseId } = useParams();
-  const { fetchTopics } = useAction();
+  const { fetchTopics, deleteCourse, deleteTopic } = useAction();
   const [course, setCourse] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deletingItem, setDeletingItem] = useState(null);
+  const navigate = useNavigate();
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -33,7 +44,38 @@ const ShowCoursePage = () => {
     };
 
     fetchCourseData();
-  }, []);
+  }, [courseId]);
+
+  const handleDeleteCourse = () => {
+    if (course) {
+      deleteCourse(course.id);
+      navigate("/");
+    }
+    setOpenDeleteDialog(false);
+  };
+
+  const handleDeleteTopic = () => {
+    if (deletingItem) {
+      deleteTopic(deletingItem.id);
+      setCourse((prevCourse) => ({
+        ...prevCourse,
+        topics: prevCourse.topics.filter(
+          (topic) => topic.id !== deletingItem.id
+        ),
+      }));
+    }
+    setOpenDeleteDialog(false);
+  };
+
+  const openDeleteConfirmation = (item) => {
+    setDeletingItem(item);
+    setOpenDeleteDialog(true);
+  };
+
+  const closeDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+    setDeletingItem(null);
+  };
 
   if (!course) return <Typography>Loading...</Typography>;
 
@@ -66,20 +108,30 @@ const ShowCoursePage = () => {
               }}
             >
               <CardContent>
+                {role === "teacher" && (
+                  <IconButton
+                    color="black"
+                    component={Link}
+                    to={`/course/edit/${course.id}`}
+                    sx={{ position: "absolute" }}
+                  >
+                    <EditIcon sx={{ color: "black" }} />
+                  </IconButton>
+                )}
                 <Typography variant="h4" gutterBottom align="center">
                   {course.name}
                 </Typography>
-                <Divider sx={{ mb: 2, width: "100%" }} />{" "}
+                <Divider sx={{ mb: 2, width: "100%" }} />
                 <Typography variant="subtitle1" align="center" sx={{ mb: 1 }}>
                   Teacher: {course.teacher_name}
                 </Typography>
                 <Typography variant="subtitle1" align="center" sx={{ mb: 1 }}>
-                  Price: {course.price === 0 ? "Free" : `${course.price}$`}
+                  Price: {course.price}
                 </Typography>
                 <Typography variant="subtitle1" align="center" sx={{ mb: 2 }}>
                   Subject: {course.subject || "Not specified"}
                 </Typography>
-                <Divider sx={{ mb: 3, width: "100%" }} />{" "}
+                <Divider sx={{ mb: 3, width: "100%" }} />
                 <Typography
                   variant="body1"
                   color="textSecondary"
@@ -97,6 +149,25 @@ const ShowCoursePage = () => {
                 >
                   Back
                 </Button>
+                {role === "teacher" && (
+                  <>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => openDeleteConfirmation(course)}
+                      sx={{
+                        alignSelf: "center",
+                        mt: 2,
+                        ml: 2,
+                        borderColor: "red",
+                        color: "red",
+                      }}
+                    >
+                      <DeleteIcon sx={{ mr: 1 }} />
+                      Delete
+                    </Button>
+                  </>
+                )}
               </CardContent>
             </Card>
           </>
@@ -111,21 +182,45 @@ const ShowCoursePage = () => {
                   key={topic.id}
                   sx={{
                     mb: 2,
-                    p: 1.5,
-                    minHeight: 100,
+                    p: 2,
+                    minHeight: 160,
                     maxWidth: 700,
+                    position: "relative",
                   }}
                 >
                   <CardContent>
                     <ListItem
                       sx={{
                         display: "flex",
-                        flexDirection: "row",
-                        alignItems: "flex-start",
                         justifyContent: "space-between",
+                        alignItems: "center",
+                        position: "relative",
                       }}
                     >
-                      <Box>
+                      {role === "teacher" && (
+                        <IconButton
+                          color="primary"
+                          component={Link}
+                          to={`/topic/edit/${topic.id}`}
+                          sx={{
+                            position: "absolute",
+                            top: 8,
+                            right: 8,
+                            zIndex: 1,
+                          }}
+                        >
+                          <EditIcon sx={{ color: "black" }} />
+                        </IconButton>
+                      )}
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                          marginRight: 8,
+                        }}
+                      >
                         <Link
                           to={`/topic/${topic.id}`}
                           style={{ textDecoration: "none", width: "100%" }}
@@ -146,25 +241,59 @@ const ShowCoursePage = () => {
                           {topic.tests?.length || 0} questions
                         </Typography>
                       </Box>
-                      <Button
-                        variant="outlined"
-                        component={Link}
-                        to={`/topic/${topic.id}`}
-                        sx={{ ml: 2 }}
-                      >
-                        Go to study
-                      </Button>
+
+                      {role === "teacher" && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-end",
+                          }}
+                        >
+                          <Button
+                            variant="outlined"
+                            component={Link}
+                            to={`/topic/${topic.id}`}
+                            sx={{ mb: 1 }}
+                          >
+                            Go to study
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            onClick={() => openDeleteConfirmation(topic)}
+                            sx={{
+                              borderColor: "red",
+                              color: "red",
+                            }}
+                          >
+                            <DeleteIcon sx={{ mr: 1 }} />
+                            Delete
+                          </Button>
+                        </Box>
+                      )}
+                      {role !== "teacher" && (
+                        <Button
+                          variant="outlined"
+                          component={Link}
+                          to={`/topic/${topic.id}`}
+                          sx={{ mb: 1 }}
+                        >
+                          Go to study
+                        </Button>
+                      )}
                     </ListItem>
                   </CardContent>
                 </Card>
               ))}
             </List>
+
             <Paper
               sx={{
                 position: "fixed",
                 top: "20%",
                 right: 20,
-                width: 330,
+                width: 350,
                 p: 3,
                 minHeight: "60vh",
                 bgcolor: "#f5f5f5",
@@ -202,18 +331,73 @@ const ShowCoursePage = () => {
                 </Typography>
               </div>
 
-              <Button
-                variant="outlined"
-                component={Link}
-                to="/"
-                sx={{ alignSelf: "center", mt: 2 }}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                Back
-              </Button>
+                <Button
+                  variant="outlined"
+                  component={Link}
+                  to="/"
+                  sx={{ alignSelf: "center", mt: 2 }}
+                >
+                  Back
+                </Button>
+                {role === "teacher" && (
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => openDeleteConfirmation(course)}
+                    sx={{
+                      mt: 2,
+                      borderColor: "red",
+                      color: "red",
+                    }}
+                  >
+                    <DeleteIcon sx={{ mr: 1 }} />
+                    Delete
+                  </Button>
+                )}
+              </Box>
+
+              {role === "teacher" && (
+                <IconButton
+                  color="black"
+                  component={Link}
+                  to={`/course/edit/${course.id}`}
+                  sx={{ position: "absolute", top: 16, right: 16 }}
+                >
+                  <EditIcon sx={{ color: "black" }} />
+                </IconButton>
+              )}
             </Paper>
           </>
         )}
       </Box>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={openDeleteDialog} onClose={closeDeleteDialog}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this item?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDeleteDialog}>Cancel</Button>
+          <Button
+            color="secondary"
+            onClick={
+              deletingItem?.id === course.id
+                ? handleDeleteCourse
+                : handleDeleteTopic
+            }
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

@@ -8,7 +8,10 @@
         "profile": "Profile",
         "logout": "Logout",
         "login": "Login",
-        "register": "Register"
+        "register": "Register",
+        "addCourse": "Add course",
+        "addTest": "Add test",
+        "addTopic": "Add topic"
     },
     "profilePage":{
         "editProfile": "Edit profile",
