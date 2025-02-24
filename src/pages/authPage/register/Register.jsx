@@ -8,6 +8,11 @@ import {
     Box,
     Typography,
     Container,
+    FormControl,
+    FormLabel,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link, useNavigate } from "react-router-dom";
@@ -41,6 +46,7 @@ const Register = () => {
             .min(6, "Мінімальна довжина паролю 6 символів"),
         first_name: Yup.string().required("Вкажіть своє ім'я"),
         last_name: Yup.string().required("Вкажіть своє прізвище"),
+        role: Yup.string().oneOf(['student', 'teacher'], 'Роль має бути або "student", або "teacher"').required("Виберіть роль"),
     });
 
     const submitHandler = async (values) => {
@@ -77,6 +83,7 @@ const Register = () => {
             password: "",
             first_name: "",
             last_name: "",
+            role: "student",
         },
         onSubmit: submitHandler,
         validationSchema: validationSchema,
@@ -208,6 +215,26 @@ const Register = () => {
                                     {error}
                                 </Typography>
                             )}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset" fullWidth>
+                                <FormLabel component="legend">Role</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="role-radio-buttons-group"
+                                    name="role"
+                                    value={formik.values.role}
+                                    onChange={formik.handleChange}
+                                >
+                                    <FormControlLabel value="student" control={<Radio />} label="Student" />
+                                    <FormControlLabel value="teacher" control={<Radio />} label="Teacher" />
+                                </RadioGroup>
+                            </FormControl>
+                            {formik.touched.role && formik.errors.role ? (
+                                <Typography color="error" variant="body2">
+                                    {formik.errors.role}
+                                </Typography>
+                            ) : null}
                         </Grid>
                     </Grid>
                     <Button
