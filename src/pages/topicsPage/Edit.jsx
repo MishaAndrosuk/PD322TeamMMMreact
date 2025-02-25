@@ -74,7 +74,7 @@ const EditTopicPage = () => {
         description: values.description,
       })
         .then(() => {
-          navigate("/");
+          navigate(-1);
         })
         .catch((err) => {
           console.error("Error creating topic:", err);

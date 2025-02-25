@@ -71,6 +71,7 @@ export const loginUser = (data) => async (dispatch) => {
         const response = await http.post("user/login/", data);
         const { access, refresh } = response.data;
 
+        console.log(data);
         localStorage.setItem('access', access);
         localStorage.setItem('refresh', refresh);
 

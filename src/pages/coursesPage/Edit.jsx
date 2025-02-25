@@ -61,7 +61,7 @@ const EditCoursePage = () => {
         onSubmit: (values) => {
             editCourse(courseId, values)
             .then(() => {
-                navigate("/"); 
+                navigate(-1); 
             })
             .catch((err) => {
                 console.error("Error creating topic:", err);

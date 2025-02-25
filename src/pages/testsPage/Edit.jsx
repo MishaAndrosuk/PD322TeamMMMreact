@@ -99,7 +99,7 @@ const EditTestPage = () => {
         }
       });
 
-      navigate("/");
+      navigate(-1);
     },
   });
 
