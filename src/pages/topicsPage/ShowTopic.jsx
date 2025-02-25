@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import EditIcon from "@mui/icons-material/Edit"; // додано імпорт для іконки редагування
 import { useParams, useNavigate } from "react-router-dom";
 
 const ShowTopicPage = () => {
@@ -64,7 +65,19 @@ const ShowTopicPage = () => {
 
   return (
     <Container maxWidth="md">
-      <Paper elevation={3} sx={{ padding: 4, marginTop: 5, marginBottom: 5 }}>
+      <Paper elevation={3} sx={{ padding: 4, marginTop: 5, marginBottom: 5, position: "relative" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: 20,
+            right: 20,
+            cursor: "pointer",
+            zIndex: 1,
+          }}
+        >
+          <EditIcon onClick={() => navigate(`/course/edit/${topicId}`)} />
+        </Box>
+
         <Typography variant="h4" gutterBottom>
           {topicTitle}
         </Typography>

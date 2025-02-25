@@ -91,7 +91,15 @@ const ShowCoursePage = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, display: "flex", gap: 4 }}>
+    <Container
+      maxWidth="md"
+      sx={{
+        mt: 4,
+        display: "flex",
+        gap: 4,
+        position: "relative", // Додаємо позиціонування для головного контейнера
+      }}
+    >
       <Box sx={{ flexGrow: 1, marginLeft: 2 }}>
         {course.topics && course.topics.length === 0 ? (
           <>
@@ -113,7 +121,12 @@ const ShowCoursePage = () => {
                     color="black"
                     component={Link}
                     to={`/course/edit/${course.id}`}
-                    sx={{ position: "absolute" }}
+                    sx={{
+                      position: "absolute",
+                      top: 50,
+                      right: 170,
+                      zIndex: 1,
+                    }}
                   >
                     <EditIcon sx={{ color: "black" }} />
                   </IconButton>
