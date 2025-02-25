@@ -108,12 +108,12 @@ const ShowCoursePage = () => {
               }}
             >
               <CardContent>
-                {role === "teacher" && (
+                {role === "Teacher" && (
                   <IconButton
                     color="black"
                     component={Link}
                     to={`/course/edit/${course.id}`}
-                    sx={{ position: "absolute" }}
+                    sx={{ position: "absolute", top: 150, right: 480, zIndex: 1 }}
                   >
                     <EditIcon sx={{ color: "black" }} />
                   </IconButton>
@@ -149,7 +149,7 @@ const ShowCoursePage = () => {
                 >
                   Back
                 </Button>
-                {role === "teacher" && (
+                {role === "Teacher" && (
                   <>
                     <Button
                       variant="outlined"
@@ -189,30 +189,30 @@ const ShowCoursePage = () => {
                   }}
                 >
                   <CardContent>
+                    {role === "Teacher" && (
+                      <IconButton
+                        color="primary"
+                        component={Link}
+                        to={`/topic/edit/${topic.id}`}
+                        sx={{
+                          position: "absolute",
+                          top: 8,
+                          right: 8,
+                          zIndex: 1,
+                        }}
+                      >
+                        <EditIcon sx={{ color: "black" }} />
+                      </IconButton>
+                    )}
                     <ListItem
                       sx={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
                         position: "relative",
+                        paddingTop: 4,
                       }}
                     >
-                      {role === "teacher" && (
-                        <IconButton
-                          color="primary"
-                          component={Link}
-                          to={`/topic/edit/${topic.id}`}
-                          sx={{
-                            position: "absolute",
-                            top: 8,
-                            right: 8,
-                            zIndex: 1,
-                          }}
-                        >
-                          <EditIcon sx={{ color: "black" }} />
-                        </IconButton>
-                      )}
-
                       <Box
                         sx={{
                           display: "flex",
@@ -223,7 +223,12 @@ const ShowCoursePage = () => {
                       >
                         <Link
                           to={`/topic/${topic.id}`}
-                          style={{ textDecoration: "none", width: "100%" }}
+                          style={{
+                            textDecoration: "none",
+                            width: "100%",
+                            pointerEvents: role ? "auto" : "none",
+                            color: role ? "inherit" : "gray",
+                          }}
                         >
                           <Typography
                             variant="h6"
@@ -242,46 +247,34 @@ const ShowCoursePage = () => {
                         </Typography>
                       </Box>
 
-                      {role === "teacher" && (
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "flex-end",
-                          }}
-                        >
-                          <Button
-                            variant="outlined"
-                            component={Link}
-                            to={`/topic/${topic.id}`}
-                            sx={{ mb: 1 }}
-                          >
-                            Go to study
-                          </Button>
-                          <Button
-                            variant="outlined"
-                            color="error"
-                            onClick={() => openDeleteConfirmation(topic)}
-                            sx={{
-                              borderColor: "red",
-                              color: "red",
-                            }}
-                          >
-                            <DeleteIcon sx={{ mr: 1 }} />
-                            Delete
-                          </Button>
-                        </Box>
-                      )}
-                      {role !== "teacher" && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 1,
+                          alignItems: "center",
+                          marginTop: 2,
+                        }}
+                      >
                         <Button
                           variant="outlined"
                           component={Link}
                           to={`/topic/${topic.id}`}
-                          sx={{ mb: 1 }}
+                          disabled={!role}
                         >
                           Go to study
                         </Button>
-                      )}
+                        {role === "Teacher" && (
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            onClick={() => openDeleteConfirmation(topic)}
+                            sx={{ borderColor: "red", color: "red" }}
+                          >
+                            <DeleteIcon sx={{ mr: 1 }} />
+                            Delete
+                          </Button>
+                        )}
+                      </Box>
                     </ListItem>
                   </CardContent>
                 </Card>
@@ -303,33 +296,51 @@ const ShowCoursePage = () => {
                 flexDirection: "column",
               }}
             >
-              <div>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Typography
                   variant="h6"
                   gutterBottom
-                  sx={{ fontWeight: "bold" }}
+                  sx={{ fontWeight: "bold", pr: 4 }}
                 >
                   {course.name}
                 </Typography>
-                <Divider sx={{ mb: 2 }} />
-                <Typography variant="body1" sx={{ mb: 1 }}>
-                  <strong>Subject:</strong> {course.subject || "Not specified"}
-                </Typography>
-                <Typography variant="body1" sx={{ mb: 1 }}>
-                  <strong>Teacher:</strong> {course.teacher_name}
-                </Typography>
-                <Typography variant="body1" sx={{ mb: 2 }}>
-                  <strong>Price:</strong> {course.price}
-                </Typography>
-                <Divider sx={{ mb: 2 }} />
-                <Typography variant="body2" sx={{ mb: 1, color: "gray" }}>
-                  <strong>Creation Date:</strong>{" "}
-                  {formatDate(course.created_at)}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "gray" }}>
-                  <strong>Total Questions:</strong> {totalQuestions}
-                </Typography>
-              </div>
+                {role === "Teacher" && (
+                  <IconButton
+                    component={Link}
+                    to={`/course/edit/${course.id}`}
+                    sx={{ color: "black" }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                )}
+              </Box>
+
+              <Divider sx={{ mb: 2 }} />
+
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                <strong>Subject:</strong> {course.subject || "Not specified"}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                <strong>Teacher:</strong> {course.teacher_name}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                <strong>Price:</strong> {course.price}
+              </Typography>
+
+              <Divider sx={{ mb: 2 }} />
+
+              <Typography variant="body2" sx={{ mb: 1, color: "gray" }}>
+                <strong>Creation Date:</strong> {formatDate(course.created_at)}
+              </Typography>
+              <Typography variant="body2" sx={{ color: "gray" }}>
+                <strong>Total Questions:</strong> {totalQuestions}
+              </Typography>
 
               <Box
                 sx={{
@@ -346,33 +357,18 @@ const ShowCoursePage = () => {
                 >
                   Back
                 </Button>
-                {role === "teacher" && (
+                {role === "Teacher" && (
                   <Button
                     variant="outlined"
                     color="error"
                     onClick={() => openDeleteConfirmation(course)}
-                    sx={{
-                      mt: 2,
-                      borderColor: "red",
-                      color: "red",
-                    }}
+                    sx={{ mt: 2, borderColor: "red", color: "red" }}
                   >
                     <DeleteIcon sx={{ mr: 1 }} />
                     Delete
                   </Button>
                 )}
               </Box>
-
-              {role === "teacher" && (
-                <IconButton
-                  color="black"
-                  component={Link}
-                  to={`/course/edit/${course.id}`}
-                  sx={{ position: "absolute", top: 16, right: 16 }}
-                >
-                  <EditIcon sx={{ color: "black" }} />
-                </IconButton>
-              )}
             </Paper>
           </>
         )}

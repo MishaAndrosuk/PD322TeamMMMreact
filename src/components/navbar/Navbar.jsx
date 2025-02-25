@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -27,6 +27,10 @@ const Navbar = () => {
   const role = localStorage.getItem("role");
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setAnchorEl(null);
+  }, [isAuth]);
 
   const handleLogout = async () => {
     await logoutUser();
@@ -166,7 +170,7 @@ const Navbar = () => {
                 >
                   {t("auth.profile")}
                 </MenuItem>
-                {String(role) === "teacher" ? (
+                {String(role) === "Teacher" ? (
                   <>
                     <MenuItem
                       component={Link}
