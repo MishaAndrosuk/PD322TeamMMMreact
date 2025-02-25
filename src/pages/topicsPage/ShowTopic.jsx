@@ -95,7 +95,6 @@ const ShowTopicPage = () => {
             zIndex: 1,
           }}
         >
-          <EditIcon onClick={() => navigate(`/course/edit/${topicId}`)} />
         </Box>
 
         <Typography variant="h4" gutterBottom>

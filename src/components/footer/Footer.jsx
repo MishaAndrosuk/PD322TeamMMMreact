@@ -13,8 +13,8 @@ const Footer = () => {
                 fontSize: "1em",
                 color: "#333",
                 width: "100%",
-                marginTop: "20px",  // Додаємо відступ зверху
-                position: "relative",  // Заміна на relative, щоб футер не перекривав контент
+                marginTop: "2%",
+                position: "relative",
             }}
         >
             <Typography variant="body1" sx={{ margin: 0, fontWeight: 400 }}>

@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 const Navbar = () => {
   const { logoutUser } = useAction();
   const navigate = useNavigate();
-  const { isAuth, user } = useSelector((state) => state.userReducer);
+  const { isAuth, user } = useSelector((state) => state.authReducer);
   const [anchorEl, setAnchorEl] = useState(null);
   const [imgError, setImgError] = useState(false);
   const role = localStorage.getItem("role");

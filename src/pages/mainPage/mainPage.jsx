@@ -14,7 +14,7 @@ function MainPage() {
   const { courses, loading, error } = useSelector((state) => state.coursesReduser);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const coursesPerPage = 9;
+  const coursesPerPage = 6;
   const { t } = useTranslation();
 
   useEffect(() => {

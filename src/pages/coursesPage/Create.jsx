@@ -39,23 +39,6 @@ const CreateCoursePage = () => {
         },
     });
 
-    const handleAddTopic = (event) => {
-        event.preventDefault();
-
-        if (!formik.isValid) {
-            formik.setTouched({
-                name: true,
-                description: true,
-                teacher_name: true,
-                price: true,
-                subject: true,
-            });
-            return;
-        }
-
-        formik.submitForm(); 
-    };
-
     const handleCreateCourse = (event) => {
         event.preventDefault();
 
