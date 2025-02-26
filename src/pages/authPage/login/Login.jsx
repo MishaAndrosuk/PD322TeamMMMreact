@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
     Avatar,
@@ -16,14 +17,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
-import { useDispatch } from "react-redux";
 import { useAction } from "../../../hooks/useAction";
 import { useTranslation } from "react-i18next";
 
 const Login = () => {
     const { signIn, loginUser } = useAction();
+    const user = useSelector((state) => state.userReducer.user);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const [error, setError] = React.useState("");
     const { t } = useTranslation();
@@ -41,6 +41,12 @@ const Login = () => {
             setError("Something went wrong");
         }
     };
+
+    useEffect(() => {
+        if (user && user.role) {
+            localStorage.setItem("role", user.role);
+        }
+    }, [user]);
 
     const googleSuccessHandler = (credentials) => {
         const token = credentials.credential;

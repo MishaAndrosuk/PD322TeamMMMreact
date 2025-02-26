@@ -8,7 +8,10 @@
         "profile": "Профіль",
         "logout": "Вийти",
         "login": "Увійти",
-        "register": "Зареєструватися"
+        "register": "Зареєструватися",
+        "addCourse": "Додати курс",
+        "addTopic": "Додати тему",
+        "addTest": "Додати тест"
     },
     "profilePage": {
         "editProfile": "Редагувати профіль",

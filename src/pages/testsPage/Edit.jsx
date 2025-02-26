@@ -30,7 +30,7 @@ const EditTestPage = () => {
     editAnswerOption,
     deleteAnswerOption,
   } = useAction();
-  const courses = useSelector((state) => state.courseReducer.courses || []);
+  const { courses } = useSelector((state) => state.coursesReduser);
   const [topics, setTopics] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -99,7 +99,7 @@ const EditTestPage = () => {
         }
       });
 
-      navigate("/");
+      navigate(-1);
     },
   });
 

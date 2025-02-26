@@ -45,13 +45,15 @@ export const getMe = () => async (dispatch) => {
     }
 };
 
-export const registerUser = (data) => async (dispatch) => {
+export const registerUser = (values) => async (dispatch) => {
     try {
-        const response = await http.post("user/register/", data);
+        const response = await http.post("user/register/", values);
         const { access, refresh } = response.data;
-
+        
         localStorage.setItem('access', access);
         localStorage.setItem('refresh', refresh);
+        localStorage.setItem('isAuthSuccess', true);
+        localStorage.setItem('role', values.role);
 
         dispatch({ type: "USER_LOGIN" });
         dispatch(getMe());
@@ -69,6 +71,7 @@ export const loginUser = (data) => async (dispatch) => {
         const response = await http.post("user/login/", data);
         const { access, refresh } = response.data;
 
+        console.log(data);
         localStorage.setItem('access', access);
         localStorage.setItem('refresh', refresh);
 
@@ -91,6 +94,8 @@ export const logoutUser = () => async (dispatch) => {
 
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
+        localStorage.removeItem("isAuthSuccess");
+        localStorage.removeItem("role");
 
         dispatch({ type: "USER_LOGOUT" });
 

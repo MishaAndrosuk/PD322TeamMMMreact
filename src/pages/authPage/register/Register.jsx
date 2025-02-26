@@ -46,11 +46,12 @@ const Register = () => {
             .min(6, "Мінімальна довжина паролю 6 символів"),
         first_name: Yup.string().required("Вкажіть своє ім'я"),
         last_name: Yup.string().required("Вкажіть своє прізвище"),
-        role: Yup.string().oneOf(['student', 'teacher'], 'Роль має бути або "student", або "teacher"').required("Виберіть роль"),
+        role: Yup.string().oneOf(['Student', 'Teacher'], 'Роль має бути або "student", або "teacher"').required("Виберіть роль"),
     });
 
     const submitHandler = async (values) => {
         try {
+            console.log("Register values:", values);
             const response = await registerUser(values);
             if (response.status === 200) {
                 navigate("/");
@@ -83,7 +84,7 @@ const Register = () => {
             password: "",
             first_name: "",
             last_name: "",
-            role: "student",
+            role: "Student",
         },
         onSubmit: submitHandler,
         validationSchema: validationSchema,
@@ -226,8 +227,8 @@ const Register = () => {
                                     value={formik.values.role}
                                     onChange={formik.handleChange}
                                 >
-                                    <FormControlLabel value="student" control={<Radio />} label="Student" />
-                                    <FormControlLabel value="teacher" control={<Radio />} label="Teacher" />
+                                    <FormControlLabel value="Student" control={<Radio />} label="Student" />
+                                    <FormControlLabel value="Teacher" control={<Radio />} label="Teacher" />
                                 </RadioGroup>
                             </FormControl>
                             {formik.touched.role && formik.errors.role ? (

@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 const CreateTestPage = () => {
   const { createTest, fetchCourses, fetchTopics, createAnswerOption } =
     useAction();
-  const courses = useSelector((state) => state.courseReducer.courses || []);
+  const { courses } = useSelector((state) => state.coursesReduser);
   const [topics, setTopics] = useState([]);
   const navigate = useNavigate();
 
