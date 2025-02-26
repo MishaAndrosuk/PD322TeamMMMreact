@@ -9,12 +9,11 @@ import { useTranslation } from "react-i18next";
 
 function MainPage() {
   const navigate = useNavigate();
-
   const { fetchCourses } = useAction();
   const { courses, loading, error } = useSelector((state) => state.coursesReduser);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const coursesPerPage = 9;
+  const coursesPerPage = 6;
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -23,8 +22,8 @@ function MainPage() {
 
   const filteredCourses = courses.filter(
     (course) =>
-      course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.subject.toLowerCase().includes(searchQuery.toLowerCase())
+      (course.name && course.name.toLowerCase().includes(searchQuery.toLowerCase())) || 
+      (course.subject && course.subject.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const indexOfLastCourse = currentPage * coursesPerPage;

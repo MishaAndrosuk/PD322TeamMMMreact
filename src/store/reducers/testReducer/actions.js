@@ -1,10 +1,8 @@
-import axios from "axios";
-
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+import http from "../../../http_common"
 
 export const fetchTestsByTopic = (topicId) => async (dispatch) => {
     try {
-        const response = await axios.get(`topic/${topicId}/tests`);
+        const response = await http.get(`/api/topic/${topicId}/tests`);
         dispatch({ type: "FETCH_TESTS_BY_TOPIC", payload: response.data });
         return response.data;
     } catch (error) {
@@ -14,7 +12,7 @@ export const fetchTestsByTopic = (topicId) => async (dispatch) => {
 
 export const createTest = (topicId, testData) => async (dispatch) => {
     try {
-        const response = await axios.post(`create/test/${topicId}`, {
+        const response = await http.post(`/api/create/test/${topicId}`, {
             topicId: topicId,
             ...testData
         });
@@ -27,7 +25,7 @@ export const createTest = (topicId, testData) => async (dispatch) => {
 
 export const getTest = (testId) => async (dispatch) => {
     try {
-        const response = await axios.get(`test/${testId}/answers`);
+        const response = await http.get(`/api/test/${testId}/answers`);
         dispatch({ type: "GET_TEST", payload: response.data });
         return response.data;
     } catch (error) {
@@ -37,7 +35,7 @@ export const getTest = (testId) => async (dispatch) => {
 
 export const editTest = (testId, updatedData) => async (dispatch) => {
     try {
-        const response = await axios.put(`edit/test/${testId}`, {
+        const response = await http.put(`/api/edit/test/${testId}`, {
             topicId: updatedData.topicId,
             ...updatedData
         });
@@ -49,7 +47,7 @@ export const editTest = (testId, updatedData) => async (dispatch) => {
 
 export const deleteTest = (testId) => async (dispatch) => {
     try {
-        const response = await axios.delete(`delete/test/${testId}`);
+        const response = await http.delete(`/api/delete/test/${testId}`);
         if (response.status === 204) {
             dispatch({ type: "DELETE_TEST", payload: testId });
         }
@@ -60,7 +58,7 @@ export const deleteTest = (testId) => async (dispatch) => {
 
 export const createAnswerOption = (testId, answerData) => async (dispatch) => {
     try {
-        const response = await axios.post(`create/answer/${testId}`, {
+        const response = await http.post(`/api/create/answer/${testId}`, {
             testId: testId,
             ...answerData
         });
@@ -72,7 +70,7 @@ export const createAnswerOption = (testId, answerData) => async (dispatch) => {
 
 export const editAnswerOption = (answerOptionId, updatedData, testId) => async (dispatch) => {
     try {
-        const response = await axios.put(`edit/answer/${answerOptionId}`, updatedData);
+        const response = await http.put(`/api/edit/answer/${answerOptionId}`, updatedData);
         dispatch({ type: "EDIT_ANSWER_OPTION", payload: { testId, answer: response.data } });
     } catch (error) {
         console.error("editAnswerOption error:", error);
@@ -81,7 +79,7 @@ export const editAnswerOption = (answerOptionId, updatedData, testId) => async (
 
 export const deleteAnswerOption = (answerOptionId) => async (dispatch) => {
     try {
-        await axios.delete(`delete/answer/${answerOptionId}`);
+        await http.delete(`/api/delete/answer/${answerOptionId}`);
         dispatch({ type: "DELETE_ANSWER_OPTION", payload: answerOptionId });
     } catch (error) {
         console.error("deleteAnswerOption error:", error);

@@ -20,7 +20,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
-
 const ShowTopicPage = () => {
   const { topicId } = useParams();
   const navigate = useNavigate();
@@ -85,7 +84,10 @@ const ShowTopicPage = () => {
 
   return (
     <Container maxWidth="md">
-      <Paper elevation={3} sx={{ padding: 4, marginTop: 5, marginBottom: 5, position: "relative" }}>
+      <Paper
+        elevation={3}
+        sx={{ padding: 4, marginTop: 5, marginBottom: 5, position: "relative" }}
+      >
         <Box
           sx={{
             position: "absolute",
@@ -95,7 +97,7 @@ const ShowTopicPage = () => {
             zIndex: 1,
           }}
         >
-          <EditIcon onClick={() => navigate(`/course/edit/${topicId}`)} />
+          {" "}
         </Box>
 
         <Typography variant="h4" gutterBottom>
