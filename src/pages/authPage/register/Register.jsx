@@ -75,6 +75,7 @@ const Register = () => {
         signUp(token);
         localStorage.setItem("user", token);
         localStorage.setItem("isAuthSuccess", "true");
+        
         navigate("/");
     };
 

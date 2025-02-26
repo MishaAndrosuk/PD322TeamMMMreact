@@ -93,7 +93,6 @@ export const logoutUser = () => async (dispatch) => {
             });
 
         localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
         localStorage.removeItem("isAuthSuccess");
         localStorage.removeItem("role");
 
@@ -109,7 +108,6 @@ export const logoutUser = () => async (dispatch) => {
             });
 
             localStorage.removeItem("access");
-            localStorage.removeItem("refresh");
 
             dispatch({ type: "USER_LOGOUT" });
         }
