@@ -5,7 +5,6 @@ export const signIn = (token) => async (dispatch) => {
     try {
         const user = jwtDecode(token);
         
-        localStorage.setItem("access", token);
         localStorage.setItem("isAuthSuccess", true);
         localStorage.setItem("role", "Student");
 
@@ -22,7 +21,6 @@ export const signUp = (token) => (dispatch) => {
     try {
         const user = jwtDecode(token);
         
-        localStorage.setItem("access", token);
         localStorage.setItem("isAuthSuccess", true);
         localStorage.setItem("role", "Student");
         
@@ -35,7 +33,7 @@ export const signUp = (token) => (dispatch) => {
 
 export const getMe = () => async (dispatch) => {
     try {
-        const token = localStorage.getItem("access");
+        const token = localStorage.getItem("user");
 
         const response = await http.get("user/me/",{
             headers: { Authorization: `Bearer ${token}` },
@@ -48,7 +46,7 @@ export const getMe = () => async (dispatch) => {
             try {
                 await refreshTokens();
 
-                const token = localStorage.getItem('access');
+                const token = localStorage.getItem('user');
                 const response = await http.get('user/me/', {
                     headers: { Authorization: `Bearer ${token}` },
                 });

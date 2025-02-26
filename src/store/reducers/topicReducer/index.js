@@ -7,15 +7,17 @@ export const TopicReducer = (state = initialTopicsState, action) => {
         case "FETCH_TOPICS":
             return { ...state, topics: action.payload };
 
-        case "CREATE_TOPIC":
-            return { ...state, topics: [...state.topics, action.payload] };
+            case "CREATE_TOPIC":
+                return { ...state, topics: Array.isArray(state.topics) ? [...state.topics, action.payload] : [action.payload] };
 
         case "EDIT_TOPIC":
             return {
                 ...state,
-                topics: state.topics.map(topic =>
+                topics: Array.isArray(state.topics)
+                ? state.topics.map((topic) =>
                     topic.id === action.payload.id ? action.payload : topic
                 )
+                : [],
             };
 
         case "DELETE_TOPIC":
