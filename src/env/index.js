@@ -1,0 +1,12 @@
+const REMOTE_API_HOST_NAME = import.meta.env.VITE_API_URL;
+const REMOTE_HOST_NAME = import.meta.env.VITE_SERVER_URL;
+
+// console.log("REMOTE_API_HOST_NAME", REMOTE_API_HOST_NAME);
+// console.log("REMOTE_HOST_NAME", REMOTE_HOST_NAME);
+
+const APP_ENV = {
+    REMOTE_API_HOST_NAME: REMOTE_API_HOST_NAME,
+    REMOTE_HOST_NAME: REMOTE_HOST_NAME,
+};
+
+export { APP_ENV };

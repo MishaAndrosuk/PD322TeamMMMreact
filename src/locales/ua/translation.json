@@ -1,0 +1,54 @@
+{
+    "mainPage": {
+        "catalog": "Каталог курсів MMM",
+        "search": "Введіть сюди назву курсу або сферу, яка вас цікавить",
+        "searchButton": "Пошук"
+    },
+    "auth": {
+        "profile": "Профіль",
+        "logout": "Вийти",
+        "login": "Увійти",
+        "register": "Зареєструватися",
+        "addCourse": "Додати курс",
+        "addTopic": "Додати тему",
+        "addTest": "Додати тест"
+    },
+    "profilePage": {
+        "editProfile": "Редагувати профіль",
+        "deleteAccount": "Видалити акаунт",
+        "confirmDeleteModal": {
+            "confirmDelete": "Підтвердіть видалення акаунту",
+            "youSure": "Ви впевнені, що хочете видалити свій акаунт? Цю дію неможливо скасувати.",
+            "cancelButton": "Скасувати",
+            "deleteButton": "Видалити"
+        }
+    },
+    "loginPage": {
+        "login": "Увійти",
+        "email": "Пошта",
+        "password": "Пароль",
+        "rememberMe": "Запам'ятати мене",
+        "loginButton": "Увійти",
+        "dontHaveAccount": "Не маєте акаунту? Зареєструйтесь зараз"
+    },
+    "registerPage": {
+        "register": "Зареєструватися",
+        "firstName": "Ім'я",
+        "lastName": "Прізвище",
+        "email": "Пошта",
+        "password": "Пароль",
+        "registerButton": "Зареєструватися",
+        "alreadyHaveAccount": "Вже маєте акаунт? Увійдіть зараз"
+    },
+    "editProfilePage": {
+        "editProfile": "Редагувати профіль",
+        "firstName": "Ім'я",
+        "lastName": "Прізвище",
+        "password": "Пароль",
+        "confirmPassword": "Підтвердіть пароль",
+        "saveButton": "Зберегти",
+        "deleteAccount": "Видалити акаунт",
+        "updateAvatar": "Оновити аватар",
+        "sevaNewAvatarButton": "Зберегти новий аватар"
+    }
+}

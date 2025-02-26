@@ -1,0 +1,15 @@
+.footer {
+    background-color: #f1f1f1;
+    padding: 20px;
+    text-align: center;
+    font-size: 1em;
+    color: #333;
+    position: relative;  /* Це дозволить футеру бути на своєму місці */
+    width: 100%;
+    margin-top: 20px;  /* Додаємо відступ зверху */
+}
+
+.footer-text {
+    margin: 0;
+    font-weight: 400;
+}
