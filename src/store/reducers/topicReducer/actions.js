@@ -19,6 +19,7 @@ export const createTopic = (courseId, topicData) => async (dispatch) => {
             ...topicData
         });
         dispatch({ type: "CREATE_TOPIC", payload: response.data });
+        return response.data;
     } catch (error) {
         console.error("createTopic error:", error);
     }

@@ -15,11 +15,9 @@ export const fetchCourses = () => async (dispatch) => {
 
 export const createCourse = (courseData) => async (dispatch) => {
     try {
-        console.log("courseData", courseData);
         const response = await axios.post("create/course/", courseData);
-        console.log("Response from server:", response.data);
         dispatch({ type: "CREATE_COURSE", payload: response.data });
-        return response;
+        return response.data;
     } catch (error) {
         console.error("createCourse error:", error);
     }
@@ -36,7 +34,7 @@ export const editCourse = (courseId, updatedData) => async (dispatch) => {
 
 export const deleteCourse = (courseId) => async (dispatch) => {
     try {
-        await axios.delete(`delete/course/${courseId}`);
+        const response = await axios.delete(`delete/course/${courseId}`);
         if (response.status === 204) {
             dispatch({ type: "DELETE_COURSE", payload: courseId });
         }
