@@ -9,15 +9,23 @@ import { useTranslation } from "react-i18next";
 
 function MainPage() {
   const navigate = useNavigate();
-  const { fetchCourses } = useAction();
+  const { fetchCourses, buyCourse, checkIfCoursePurchased } = useAction();
   const { courses, loading, error } = useSelector((state) => state.coursesReduser);
+  const user = useSelector((state) => state.userReducer.user);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
   const { t } = useTranslation();
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
-    fetchCourses();
+    fetchCourses().then(() => {
+      courses.forEach((course) => {
+        if (user && user.id) {
+          checkIfCoursePurchased(course.id, user.id);
+        }
+      });
+    });
   }, []);
 
   const filteredCourses = courses.filter(
@@ -36,6 +44,11 @@ function MainPage() {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
+  };
+
+  const handleBuyCourse = (courseId, e) => {
+    e.stopPropagation();
+    buyCourse(courseId, user.id);
   };
 
   return (
@@ -80,12 +93,29 @@ function MainPage() {
               key={course.id}
               className="course-card"
               onClick={() => handleCourseClick(course.id)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", display: "flex", justifyContent: "space-between", padding: "10px" }}
             >
-              <Typography variant="h5" className="course-name">{course.name}</Typography>
-              <Typography className="course-description">{course.description}</Typography>
-              <Box className="course-footer">
+              <Box>
+                <Typography variant="h5" className="course-name">{course.name}</Typography>
+                <Typography className="course-description">{course.description}</Typography>
+              </Box>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
                 <Typography variant="h6" className="course-price">Price: {course.price}$</Typography>
+                {role === "Student" && !course.purchased && (
+                  <Button 
+                    variant="contained" 
+                    color="success" 
+                    sx={{ mt: 1 }}
+                    onClick={(e) => handleBuyCourse(course.id, e)}
+                  >
+                    Купити
+                  </Button>
+                )}
+                {role === "Student" && course.purchased && (
+                  <Typography color="secondary" sx={{ mt: 1 }}>
+                    Курс вже куплено
+                  </Typography>
+                )}
               </Box>
             </Box>
           ))
